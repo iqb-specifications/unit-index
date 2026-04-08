@@ -82,7 +82,8 @@ Eine separate Datei enthält Kommentare, die während der Entwicklungszeit der U
 
 Für die Konfiguration der Antwortverarbeitung ist es erforderlich, Informationen über die Variablen in die Unit-Xml mit aufzunehmen. Eine Variable ist eine Datenstruktur, die den Wert einer Interaktion der Testperson mit der Unit - sog. Antwort - beschreibt. Wir unterscheiden **Basisvariablen** für die Antworten, die unmittelbar aus der Interaktion stammen, und **abgeleitete Variablen** für Antwortwerte, die aus einer Kombination von Werten der Basisvariablen ermittelt wurden.
 
-Im Datenmodell können diese Variablen grundsätzlich durch die UI-Definition festgelegt sein oder durch das Kodierschema. Wenn man diese beiden Datenstrukturen kennt, könnte man die Variablen-Informationen auch daraus ableiten. Da aber diese Datenstrukturen nicht zwingend spezifiziert sind und mitunter auch sehr komplex sein können, enthält die Unit-Xml eine separate Deklaration der Variablen. Folgende Informationen sind gespeichert:
+<details>
+<summary>Beispiel Unit-Xml mit Variablen</summary>
 
 ```xml
 <Unit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -99,41 +100,35 @@ Im Datenmodell können diese Variablen grundsätzlich durch die UI-Definition fe
         M_MM5.voud
     </UIDefinitionRef>
     <BaseVariables>
-        <Variable id="01a" type="integer" format="" nullable="false" multiple="false" page="">
-            <Values complete="true">
-                <Value>
-                    <label>stimmt</label>
-                    <value>1</value>
-                </Value>
-                <Value>
-                    <label>stimmt nicht</label>
-                    <value>2</value>
-                </Value>
-            </Values>
+        <Variable id="01a" type="integer" format="" nullable="false" multiple="false" page="" valuesComplete="true">
+            <Value>
+                <label>stimmt</label>
+                <value>1</value>
+            </Value>
+            <Value>
+                <label>stimmt nicht</label>
+                <value>2</value>
+            </Value>
         </Variable>
-        <Variable id="01b" type="integer" format="" nullable="false" multiple="false" page="">
-            <Values complete="true">
-                <Value>
-                    <label>stimmt</label>
-                    <value>1</value>
-                </Value>
-                <Value>
-                    <label>stimmt nicht</label>
-                    <value>2</value>
-                </Value>
-            </Values>
+        <Variable id="01b" type="integer" format="" nullable="false" multiple="false" page="" valuesComplete="true">
+            <Value>
+                <label>stimmt</label>
+                <value>1</value>
+            </Value>
+            <Value>
+                <label>stimmt nicht</label>
+                <value>2</value>
+            </Value>
         </Variable>
-        <Variable id="01c" type="integer" format="" nullable="false" multiple="false" page="">
-            <Values complete="true">
-                <Value>
-                    <label>stimmt</label>
-                    <value>1</value>
-                </Value>
-                <Value>
-                    <label>stimmt nicht</label>
-                    <value>2</value>
-                </Value>
-            </Values>
+        <Variable id="01c" type="integer" format="" nullable="false" multiple="false" page="" valuesComplete="true">
+            <Value>
+                <label>stimmt</label>
+                <value>1</value>
+            </Value>
+            <Value>
+                <label>stimmt nicht</label>
+                <value>2</value>
+            </Value>
         </Variable>
     </BaseVariables>
     <DerivedVariables>
@@ -141,6 +136,10 @@ Im Datenmodell können diese Variablen grundsätzlich durch die UI-Definition fe
     </DerivedVariables>
 </Unit>
 ```
+</details>
+
+Im Datenmodell können diese Variablen grundsätzlich durch die UI-Definition festgelegt sein oder durch das Kodierschema. Wenn man diese beiden Datenstrukturen kennt, könnte man die Variablen-Informationen auch daraus ableiten. Da aber diese Datenstrukturen nicht zwingend spezifiziert sind und mitunter auch sehr komplex sein können, enthält die Unit-Xml eine separate Deklaration der Variablen. Ein Variablen-Tag kann folgende Attribute haben:
+
 * `id`: Interne dauerhafte Bezeichnung der Variable. Wird in Abhängigkeiten verwendet.
 * `alias`: Angezeigte Id, die sich ändern kann.
 * `type`: Datentyp des Antwortwertes. Mögliche Werte: `string`, `integer`, `number`, `boolean`, `attachment`, `json`, `no-value`
@@ -149,6 +148,9 @@ Im Datenmodell können diese Variablen grundsätzlich durch die UI-Definition fe
 * `multiple`: Wenn `true`, dann handelt es sich nicht um einen einzelnen Antwortwert, sondern um ein Array des oben genannten Typs.
 * `page`: Seite innerhalb der UI-Definition, die aufgerufen werden soll, wenn jemand sich den Ort der Interaktion anschauen will 
 * `visualAnchor`: Ein DOM-Element der UI-Definition kann ein Attribut `verona-visualAnchor` mit dem Wert haben, der hier bei der Variable hinterlegt ist. Wenn jemand sich den Ort der Interaktion anschauen will, kann diese Markierung genutzt werden
+* `valuesComplete`: Wenn `true`, dann ist die folgende Liste der Antwortwerte vollständig (geschlossenes Antwortformat).
+
+Ein Variablen-Tag kann `Value`-Tags enthalten. Jedes `Value`-Tag kann einen `value` und ein `label` enthalten. Damit wird mitgeteilt, welche Antwortwerte erwartet werden.    
 
 ## Basisvariablen `BaseVariables`
 

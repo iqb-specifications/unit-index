@@ -19,25 +19,11 @@
 
     <xs:complexType name="Variable">
         <xs:sequence>
-            <xs:element name="Values" minOccurs="0">
+            <xs:element name="Value" maxOccurs="unbounded">
                 <xs:complexType>
                     <xs:sequence>
-                        <xs:element name="Value" maxOccurs="unbounded">
-                            <xs:complexType>
-                                <xs:sequence>
-                                    <xs:element name="label" />
-                                    <xs:element name="value" />
-                                </xs:sequence>
-                            </xs:complexType>
-                        </xs:element>
-                    </xs:sequence>
-                    <xs:attribute name="complete" type="xs:boolean" />
-                </xs:complexType>
-            </xs:element>
-            <xs:element name="ValuePositionLabels" minOccurs="0">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element name="ValuePositionLabel" maxOccurs="unbounded" />
+                        <xs:element name="label" />
+                        <xs:element name="value" />
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
@@ -79,6 +65,7 @@
             </xs:simpleType>
         </xs:attribute>
         <xs:attribute name="visualAnchor" type="xs:string" />
+        <xs:attribute name="valuesComplete" type="xs:boolean" />
     </xs:complexType>
 
     <xs:complexType name="Dependency">
