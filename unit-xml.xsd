@@ -1,71 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-    <xs:simpleType name="VariableFormatValueExplicit">
-        <xs:restriction base="xs:string">
-            <xs:enumeration value="text-selection" />
-            <xs:enumeration value="image" />
-            <xs:enumeration value="capture-image" />
-            <xs:enumeration value="audio" />
-            <xs:enumeration value="ggb-file" />
-            <xs:enumeration value="non-negative" />
-        </xs:restriction>
-    </xs:simpleType>
-
-    <xs:simpleType name="VariableFormatValueOther">
-        <xs:restriction base="xs:string">
-            <xs:pattern value="[a-z\d-]*" />
-        </xs:restriction>
-    </xs:simpleType>
-
-    <xs:complexType name="Variable">
-        <xs:sequence>
-            <xs:element name="Value" maxOccurs="unbounded">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element name="label" />
-                        <xs:element name="value" />
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-        </xs:sequence>
-        <xs:attribute name="id" use="required">
-            <xs:simpleType>
-                <xs:restriction base="xs:string">
-                    <xs:maxLength value="50" />
-                    <xs:minLength value="1" />
-                </xs:restriction>
-            </xs:simpleType>
-        </xs:attribute>
-        <xs:attribute name="alias" type="xs:string" />
-        <xs:attribute name="type" use="required">
-            <xs:simpleType>
-                <xs:restriction base="xs:string">
-                    <xs:enumeration value="string" />
-                    <xs:enumeration value="integer" />
-                    <xs:enumeration value="number" />
-                    <xs:enumeration value="boolean" />
-                    <xs:enumeration value="attachment" />
-                    <xs:enumeration value="json" />
-                    <xs:enumeration value="no-value" />
-                </xs:restriction>
-            </xs:simpleType>
-        </xs:attribute>
-        <xs:attribute name="format">
-            <xs:simpleType>
-                <xs:union memberTypes="VariableFormatValueOther VariableFormatValueExplicit" />
-            </xs:simpleType>
-        </xs:attribute>
-        <xs:attribute name="multiple" type="xs:boolean" />
-        <xs:attribute name="nullable" type="xs:boolean" />
-        <xs:attribute name="page">
-            <xs:simpleType>
-                <xs:restriction base="xs:string">
-                    <xs:pattern value="[0-9a-zA-Z_]*" />
-                </xs:restriction>
-            </xs:simpleType>
-        </xs:attribute>
-        <xs:attribute name="visualAnchor" type="xs:string" />
-        <xs:attribute name="valuesComplete" type="xs:boolean" />
+    <xs:complexType name="ExternalReference">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute name="type" type="xs:string" />
+                <xs:attribute name="lastChange" type="xs:dateTime" />
+            </xs:extension>
+        </xs:simpleContent>
     </xs:complexType>
 
     <xs:complexType name="Dependency">
@@ -88,11 +29,9 @@
     <xs:element name="UIDefinition">
         <xs:complexType>
             <xs:simpleContent>
-                <xs:extension base="xs:string">
+                <xs:extension base="ExternalReference">
                     <xs:attribute name="player" type="xs:string" use="required" />
                     <xs:attribute name="editor" type="xs:string" />
-                    <xs:attribute name="type" type="xs:string" />
-                    <xs:attribute name="lastChange" type="xs:dateTime" />
                 </xs:extension>
             </xs:simpleContent>
         </xs:complexType>
@@ -107,50 +46,12 @@
 
                 <xs:element ref="UIDefinition" />
 
-                <xs:element name="CodingSchemeRef" minOccurs="0">
-                    <xs:complexType>
-                        <xs:simpleContent>
-                            <xs:extension base="xs:string">
-                                <xs:attribute name="schemer" type="xs:string" use="required" />
-                                <xs:attribute name="type" type="xs:string" />
-                                <xs:attribute name="lastChange" type="xs:dateTime" />
-                            </xs:extension>
-                        </xs:simpleContent>
-                    </xs:complexType>
-                </xs:element>
-
-                <xs:element name="CommentsRef" minOccurs="0">
-                    <xs:complexType>
-                        <xs:simpleContent>
-                            <xs:extension base="xs:string">
-                                <xs:attribute name="type" type="xs:string" />
-                                <xs:attribute name="lastChange" type="xs:dateTime" />
-                            </xs:extension>
-                        </xs:simpleContent>
-                    </xs:complexType>
-                </xs:element>
-
-                <xs:element name="RichNotesRef" minOccurs="0">
-                    <xs:complexType>
-                        <xs:simpleContent>
-                            <xs:extension base="xs:string">
-                                <xs:attribute name="type" type="xs:string" />
-                                <xs:attribute name="lastChange" type="xs:dateTime" />
-                            </xs:extension>
-                        </xs:simpleContent>
-                    </xs:complexType>
-                </xs:element>
-
-                <xs:element name="MetadataRef" minOccurs="0">
-                    <xs:complexType>
-                        <xs:simpleContent>
-                            <xs:extension base="xs:string">
-                                <xs:attribute name="type" type="xs:string" />
-                                <xs:attribute name="lastChange" type="xs:dateTime" />
-                            </xs:extension>
-                        </xs:simpleContent>
-                    </xs:complexType>
-                </xs:element>
+                <xs:element name="CodingSchemeRef" minOccurs="0" type="ExternalReference" />
+                <xs:element name="CommentsRef" minOccurs="0" type="ExternalReference" />
+                <xs:element name="RichNotesRef" minOccurs="0" type="ExternalReference" />
+                <xs:element name="MetadataRef" minOccurs="0" type="ExternalReference" />
+                <xs:element name="ItemsRef" minOccurs="0" type="ExternalReference" />
+                <xs:element name="VariablesRef" minOccurs="0" type="ExternalReference" />
 
                 <xs:element name="Dependencies" minOccurs="0">
                     <xs:complexType>
@@ -162,34 +63,10 @@
                         </xs:sequence>
                     </xs:complexType>
                 </xs:element>
-
-                <xs:element name="BaseVariables" minOccurs="0">
-                    <xs:complexType>
-                        <xs:sequence>
-                            <xs:element name="Variable" maxOccurs="unbounded" minOccurs="0"
-                                type="Variable" />
-                        </xs:sequence>
-                    </xs:complexType>
-                </xs:element>
-
-                <xs:element name="DerivedVariables" minOccurs="0">
-                    <xs:complexType>
-                        <xs:sequence>
-                            <xs:element name="Variable" maxOccurs="unbounded" minOccurs="0"
-                                type="Variable" />
-                        </xs:sequence>
-                    </xs:complexType>
-                </xs:element>
             </xs:all>
             <xs:attribute name="id" type="xs:ID" use="required" />
             <xs:attribute name="uuid" type="xs:string" />
             <xs:attribute name="lastChange" type="xs:dateTime" />
         </xs:complexType>
-
-        <xs:key name="basicKey">
-            <xs:selector xpath="BaseVariables/Variable|DerivedVariables/Variable" />
-            <xs:field xpath="@id" />
-        </xs:key>
-
     </xs:element>
 </xs:schema>
