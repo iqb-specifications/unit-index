@@ -2,7 +2,7 @@
 
 - Add CommentsRef
 - Add RichNotesRef
-- Add MetadataRef (remove Metadata/Reference)
+- replace Metadata/Reference by MetadataRef
 - Move id form Metadata tag to root attribute
 - Move label from Metadata to root
 - Move description from Metadata to root
@@ -14,8 +14,7 @@
 - Rename DefinitionRef to UIDefinitionRef
 - Remove deprecated attributes/tags
 - Rename schemeType to type in CodingSchemeRef
-- Remove VariablesRef tag
+- Remove BaseVariables and derivedVariables (use VariablesRef JSON!)
 - Add uuid as attribute to root
 - Add lastChanged to root
-- Remove Values (Values in Variables are direct children by now; drop untyped ValuePositionLabels)
 - Add in Dependencies: SymLink as type, rich-note as target 
