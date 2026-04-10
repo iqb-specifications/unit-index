@@ -25,7 +25,7 @@ Die folgende kurze Dokumentation dient der Verständigung über die Syntax der U
 </Unit>
 ```
 
-# Metadaten der Unit
+# Allgemeine Daten der Unit
 
 * Hauptelement-Attribut `id`: Id der Unit - wird durch den User vergeben
 * Hauptelement-Attribut `uuid`: Universelle Id der Unit - wird automatisch vergeben. Die gesicherte Einmaligkeit hilft beim Wiederfinden von Varianten/Versionen einer Unit
@@ -56,13 +56,13 @@ Das Suffix "Ref" zeigt an, dass es sich um eine externe Datei handelt. Der Datei
 
 Folgende Datenblöcke werden auf diese Art von der Unit-Xml referenziert (alle optional):
 
-| Tag           | Erläuterung                                                                                                                                                                                                                                            | Beispiele IQB                                                          |
-|---------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------|
-| `MetadataRef` | **Metadaten der Unit**: In einem standardisierten JSON-Format werden Verweise auf Vokabulare und Metadatenprofile gespeichert.                                                                                                                         | [Spezifikation](https://iqb-specifications.github.io/metadata-values/) |
-| `ItemsRef`     | **Items**: Liste von Items mit Zuordnung von Variablen und Metadaten                                                                                                                                                                                   | [Spezifikation](https://iqb-specifications.github.io/unit-items/)      |
-| `CodingSchemeRef`         | **Kodieranweisungen/Kodierschema**: Vorschriften, wie die Antworten der Unit zu kodieren sind.                                                                                                                                                         | [Spezifikation](https://iqb-specifications.github.io/coding-scheme/)   |
-| `CommentsRef` | **Kommentare**                                                                                                                                                                                                                                         |                                                                        |
-| `RichNotesRef` | **Formatierte Texte**                                                                                                                                                                                                                                  | [Spezifikation](https://iqb-specifications.github.io/unit-rich-notes/) |
+| Tag           | Erläuterung                                                                                                                                                                                                              | Beispiele IQB                                                          |
+|---------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------|
+| `MetadataRef` | **Metadaten der Unit**: In einem standardisierten JSON-Format werden Verweise auf Vokabulare und Metadatenprofile gespeichert.                                                                                           | [Spezifikation](https://iqb-specifications.github.io/metadata-values/) |
+| `ItemsRef`     | **Items**: Liste von Items mit Metadaten und Zuordnung von Variablen                                                                                                                                                     | [Spezifikation](https://iqb-specifications.github.io/unit-items/)      |
+| `CodingSchemeRef`         | **Kodieranweisungen/Kodierschema**: Vorschriften, wie die Antworten der Unit zu kodieren sind.                                                                                                                           | [Spezifikation](https://iqb-specifications.github.io/coding-scheme/)   |
+| `CommentsRef` | **Kommentare**: Formatierte hierarchische Texte (Html ggf. mit eingebetteten Bildern) zur Diskussion während der Entwicklungszeit                                                                                        | [Spezifikation](https://iqb-specifications.github.io/unit-comments/)   |
+| `RichNotesRef` | **Formatierte Texte**: Formatierte Texte (Html ggf. mit eingebetteten Bildern) mit unterschiedlichen Verwendungszwecken (z. B. didaktische Kommentare, Transcript).                                                      | [Spezifikation](https://iqb-specifications.github.io/unit-rich-notes/) |
 | `VariablesRef` | **Variablen**: Es werden alle möglichen Variablen aufgeführt, die die Antwortwerte enthalten. Die JSON-Datei enthält zwei Einträge `baseVariables` und `derivedVariables`, jeweils ein Array der folgenden Datenstruktur | [Spezifikation](https://verona-interfaces.github.io/variable-info/)    |
 
 
@@ -87,14 +87,21 @@ Die Unit-Xml enthält bereits Namen von Dateien, die zusätzlich vorhanden sein 
     </UIDefinitionRef>
     <Dependecies>
         <File for="player">GeoGebra.itcr.zip</File>
+        <SymLink for="player">widget:CALC</SymLink>
     </Dependecies>
 </Unit>
 ```
 
-## Datei
+## Bezug zu Datenblock
 
-Eine Abhängigkeit kann vom Typ `File` sein. Dann enthält der Tag-Inhalt einen Dateinamen. Das Attribut `for` gibt an, wofür diese Datei erforderlich ist. Mögliche Werte sind `player`, `editor`, `schemer`, `coder`.
+Im Attribut `for` muss angegeben werden, für welchen Datenbereich die Abhängigkeit besteht. Dies ist wichtig, wenn nur Teile einer Unit verwendet werden sollen und dann transparent sein muss, ob eine Abhängigkeit in einem bestimmten Anwendungsfall relevant ist.
 
-## Dienst
+Mögliche Werte sind `player`, `editor`, `schemer`, `coder` und `rich-note`.
 
-Eine Abhängigkeit kann vom Typ `Service` sein. Dann enthält der Tag-Inhalt eine Url zum Dienst. Das Attribut `for` gibt an, wofür diese Datei erforderlich ist (mögliche Werte s. o.).
+## Typ
+
+Es gibt verschiedene Typen der Abhängigkeit:
+
+* `File`: Diese Abhängigkeit nennt einen konkreten Namen einer Datei. Beispiel: Geogebra-Bibliothek zum Nachladen in einen Player.
+* `Service`: Hier wird spezifiziert, dass ein konkreter Webservice online verfügbar sein muss. Es muss eine Url angegeben werden. Beispiel: Online-Dienst für die KI-gestützte Kodierung von Antworten. 
+* `SymLink`: Hier wird keine spezifische Abhängigkeit definiert, sondern eine symbolische. Welche Programmierung oder welcher Dienst dann konkret bereitgestellt wird, entscheidet sich durch andere Randbedingungen. Beispiel: Ein Player erfordert ein Widget. 

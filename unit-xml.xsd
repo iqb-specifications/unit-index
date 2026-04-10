@@ -19,6 +19,7 @@
                             <xs:enumeration value="editor" />
                             <xs:enumeration value="schemer" />
                             <xs:enumeration value="coder" />
+                            <xs:enumeration value="rich-notes" />
                         </xs:restriction>
                     </xs:simpleType>
                 </xs:attribute>
@@ -59,6 +60,7 @@
                             <xs:choice minOccurs="0" maxOccurs="unbounded">
                                 <xs:element name="File" type="Dependency" />
                                 <xs:element name="Service" type="Dependency" />
+                                <xs:element name="SymLink" type="Dependency" />
                             </xs:choice>
                         </xs:sequence>
                     </xs:complexType>
