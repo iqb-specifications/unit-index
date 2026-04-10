@@ -18,3 +18,4 @@
 - Add uuid as attribute to root
 - Add lastChanged to root
 - Remove Values (Values in Variables are direct children by now; drop untyped ValuePositionLabels)
+- Add in Dependencies: SymLink as type, rich-note as target 
