@@ -2,8 +2,8 @@
 
 - Add CommentsRef
 - Add RichNotesRef
-- replace Metadata/Reference by MetadataRef
-- Move id form Metadata tag to root attribute
+- Replace Metadata/Reference by MetadataRef
+- Move id from Metadata tag to root attribute
 - Move label from Metadata to root
 - Move description from Metadata to root
 - Remove Metadata tag
@@ -17,4 +17,4 @@
 - Remove BaseVariables and derivedVariables (use VariablesRef JSON!)
 - Add uuid as attribute to root
 - Add lastChanged to root
-- Add in Dependencies: SymLink as type, rich-note as target 
+- Add in Dependencies: SymLink as type, rich-notes as target 
