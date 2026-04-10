@@ -1,5 +1,3 @@
-# Intro
-
 Die folgende kurze Dokumentation dient der Verständigung über die Syntax der Unit-Xml und deren Bedeutung.
 
 ```xml
@@ -56,14 +54,14 @@ Das Suffix "Ref" zeigt an, dass es sich um eine externe Datei handelt. Der Datei
 
 Folgende Datenblöcke werden auf diese Art von der Unit-Xml referenziert (alle optional):
 
-| Tag           | Erläuterung                                                                                                                                                                                                              | Beispiele IQB                                                          |
-|---------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------|
-| `MetadataRef` | **Metadaten der Unit**: In einem standardisierten JSON-Format werden Verweise auf Vokabulare und Metadatenprofile gespeichert.                                                                                           | [Spezifikation](https://iqb-specifications.github.io/metadata-values/) |
-| `ItemsRef`     | **Items**: Liste von Items mit Metadaten und Zuordnung von Variablen                                                                                                                                                     | [Spezifikation](https://iqb-specifications.github.io/unit-items/)      |
-| `CodingSchemeRef`         | **Kodieranweisungen/Kodierschema**: Vorschriften, wie die Antworten der Unit zu kodieren sind.                                                                                                                           | [Spezifikation](https://iqb-specifications.github.io/coding-scheme/)   |
-| `CommentsRef` | **Kommentare**: Formatierte hierarchische Texte (Html ggf. mit eingebetteten Bildern) zur Diskussion während der Entwicklungszeit                                                                                        | [Spezifikation](https://iqb-specifications.github.io/unit-comments/)   |
-| `RichNotesRef` | **Formatierte Texte**: Formatierte Texte (Html ggf. mit eingebetteten Bildern) mit unterschiedlichen Verwendungszwecken (z. B. didaktische Kommentare, Transcript).                                                      | [Spezifikation](https://iqb-specifications.github.io/unit-rich-notes/) |
-| `VariablesRef` | **Variablen**: Es werden alle möglichen Variablen aufgeführt, die die Antwortwerte enthalten. Die JSON-Datei enthält zwei Einträge `baseVariables` und `derivedVariables`, jeweils ein Array der folgenden Datenstruktur | [Spezifikation](https://verona-interfaces.github.io/variable-info/)    |
+| Tag           | Erläuterung                                                                                                                                                                                                              | Spezifikation IQB/Verona                                       | Konvention Dateiname                  |
+|---------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------|------------|
+| `MetadataRef` | **Metadaten der Unit**: In einem standardisierten JSON-Format werden Verweise auf Vokabulare und Metadatenprofile gespeichert.  | [Spezifikation](https://iqb-specifications.github.io/metadata-values/) | *.vomd.json |
+| `ItemsRef`     | **Items**: Liste von Items mit Metadaten und Zuordnung von Variablen  | [Spezifikation](https://iqb-specifications.github.io/unit-items/)  | *.voit.json |
+| `CodingSchemeRef`         | **Kodieranweisungen/Kodierschema**: Vorschriften, wie die Antworten der Unit zu kodieren sind. | [Spezifikation](https://iqb-specifications.github.io/coding-scheme/)   | *.vocs.json |
+| `CommentsRef` | **Kommentare**: Formatierte hierarchische Texte (Html ggf. mit eingebetteten Bildern) zur Diskussion während der Entwicklungszeit  | [Spezifikation](https://iqb-specifications.github.io/unit-comments/)   | *.voco.json |
+| `RichNotesRef` | **Formatierte Texte**: Formatierte Texte (Html ggf. mit eingebetteten Bildern) mit unterschiedlichen Verwendungszwecken (z. B. didaktische Kommentare, Transcript).  | [Spezifikation](https://iqb-specifications.github.io/unit-rich-notes/) |  *.vorn.json |
+| `VariablesRef` | **Variablen**: Es werden alle möglichen Variablen aufgeführt, die die Antwortwerte enthalten. Die JSON-Datei enthält zwei Einträge `baseVariables` und `derivedVariables`, jeweils ein Array der folgenden Datenstruktur | [Spezifikation](https://verona-interfaces.github.io/variable-info/)    | *.vova.json |
 
 
 # Abhängigkeiten `Dependencies`
