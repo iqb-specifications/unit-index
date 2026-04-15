@@ -40,20 +40,156 @@
       "type": "string",
       "description": "This data can be used for notes/comments to better understand the purpose of the unit"
     },
+    "userInterface": {
+      "type": "object",
+      "description": "Definition of visual presentation and interaction features.",
+      "properties": {
+        "player": {
+          "type": "string",
+          "description": "Verona player module to run the unit.",
+          "examples": [
+            "iqb-player-speedtest@4.1",
+            "iqb-player-lottie@0.25"
+          ]
+        },
+        "playerDependencies": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/externalDependency"
+          }
+        },
+        "editor": {
+          "type": "string",
+          "description": "Verona player module to edit the unit ui.",
+          "examples": [
+            "iqb-editor-aspect@2.12"
+          ]
+        },
+        "editorDependencies": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/externalDependency"
+          }
+        },
+        "type": {
+          "type": "string",
+          "description": "Used to specify the data type of the UI.",
+          "examples": [
+            "iqb-aspect@5.0"
+          ]
+        },
+        "definitionId": {
+          "type": "string",
+          "description": "Key to find the user interface definition. Usually this is the full filename without path.",
+          "examples": [
+            "H7876d4.voud.json"
+          ]
+        },
+        "definitionInline": {
+          "type": "string",
+          "description": "Full stringified UI definition. If definitionId is given too, this property will be ignored.",
+          "examples": [
+            "Bitte warte auf die Freigabe durch die Testleitung!"
+          ]
+        },
+        "modifiedAt": {
+          "type": "string",
+          "description": "Timestamp of last change.",
+          "examples": [
+            "2026-04-09T13:15:10.977Z"
+          ]
+        }
+      },
+      "required": [
+        "player"
+      ],
+      "additionalProperties": false
+    },
+    "codingScheme": {
+      "$ref": "#/$defs/externalDataBlock"
+    },
+    "comments": {
+      "$ref": "#/$defs/externalDataBlock"
+    },
+    "richNotes": {
+      "$ref": "#/$defs/externalDataBlock"
+    },
     "metadata": {
-      "type": "array",
-      "items": {
-        "$ref": "#/$defs/metadata"
-      }
+      "$ref": "#/$defs/externalDataBlock"
+    },
+    "items": {
+      "$ref": "#/$defs/externalDataBlock"
+    },
+    "variables": {
+      "$ref": "#/$defs/externalDataBlock"
     }
   },
   "required": [
-    "id"
+    "id", "userInterface"
   ],
   "additionalProperties": false,
   "$defs": {
-    "metadata": {
-      "$ref": "https://w3id.org/iqb/spec/metadata-values/3.0"
+    "externalDataBlock": {
+      "type": "object",
+      "description": "External file as part of the unit data.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Key to find the data block. Usually this is the full filename without path.",
+          "examples": [
+            "M2246.voxy.json"
+          ]
+        },
+        "type": {
+          "type": "string",
+          "description": "Used to specify the data type of the block. Best pracise use <id>@<version> (see example)",
+          "examples": [
+            "isb-unit-ex@3.6"
+          ]
+        },
+        "modifiedAt": {
+          "type": "string",
+          "description": "Timestamp of last change. This is independent from the DateTime of the file in the file system.",
+          "examples": [
+            "2026-04-09T13:15:10.977Z"
+          ]
+        },
+        "dependencies": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/externalDependency"
+          }
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "additionalProperties": false
+    },
+    "externalDependency": {
+      "type": "object",
+      "description": "External file or service this unit's running or data processing depends on.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Key to find the dependency. This can be a filename or url depending on the mode property.",
+          "examples": [
+            "GeoGebra.itcr.zip",
+            "https://short-answer.IfBQ-codingservice.de"
+          ]
+        },
+        "mode": {
+          "type": "string",
+          "description": "Used to specify the access mode of the dependency",
+          "enum": [
+            "WEB_SERVICE",
+            "FILE"
+          ],
+          "default": "FILE"
+        }
+      },
+      "required": ["id"],
+      "additionalProperties": false
     }
   }
 }
