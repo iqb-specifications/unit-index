@@ -1,0 +1,59 @@
+{
+  "$id": "unit-index@18.0",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Unit Index",
+  "description": "Specification for the main data file for assessment units.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Short name/key/id of the unit as used in a specific testing.",
+      "examples": [
+        "ME2236a01",
+        "G7224_py"
+      ]
+    },
+    "uuid": {
+      "type": "string",
+      "description": "Universal id to identify versions and variants in many different assessments.",
+      "examples": [
+        "d19188fc-02e3-439e-9ff9-4f8280f9f01c",
+        "https://w3id.org/iqb/unit/e4r5t6z7"
+      ]
+    },
+    "modifiedAt": {
+      "type": "string",
+      "description": "Timestamp of last change. This is related to the index, not to the separate data blocks.",
+      "examples": [
+        "2026-04-09T13:15:10.977Z"
+      ]
+    },
+    "label": {
+      "type": "string",
+      "description": "This data is usually taken as readable name or title in lists",
+      "examples": [
+        "Ein wunderbarer Ausflug",
+        "Das Glücksrad"
+      ]
+    },
+    "description": {
+      "type": "string",
+      "description": "This data can be used for notes/comments to better understand the purpose of the unit"
+    },
+    "metadata": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/metadata"
+      }
+    }
+  },
+  "required": [
+    "id"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "metadata": {
+      "$ref": "https://w3id.org/iqb/spec/metadata-values/3.0"
+    }
+  }
+}
