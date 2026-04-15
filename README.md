@@ -11,7 +11,7 @@ Read more:
 Change log see releases.
 
 <hr/>
-Achtung: Spezifikation und Dokumentation befinden sich derzeit in Überarbeitung. Für die wichtigsten Änderungen beim Wechsel vom XML- zum JSON-Format siehe [hier](#%C3%A4nderungen-gegen%C3%BCber-der-xml-version)!
+Achtung: Spezifikation und Dokumentation befinden sich derzeit in Überarbeitung. Für die wichtigsten Änderungen beim Wechsel vom XML- zum JSON-Format siehe [unten](https://github.com/iqb-specifications/unit-index?tab=readme-ov-file#%C3%A4nderungen-gegen%C3%BCber-der-xml-version)!
 
 # Kurzdokumentation
 
@@ -19,7 +19,7 @@ Leistungstests und Befragungen sind im Kontext von [TBA](https://iqb-berlin.gith
 
 Eine Unit wird über einen Index und separate Datenblöcke definiert. Die Datenblöcke und eventuelle weitere Abhängigkeiten sind im Index genannt. Es handelt sich beim Index und den separaten Datenblöcken um **Dateien**. Ein Transport bzw. Austausch von Units bedeutet also i.d.R. Dateitransfer.
 
-Um eine hohe Flexibilität zu ermöglichen, ist nur der Index spezifiziert. Obwohl es für viele Datenblöcke erprobte Datenstrukturen gibt, sind die Datenblöcke nicht streng spezifiziert. Statt dessen ist im Index der Typ (Id und Version) genannt, wodurch sich ein verarbeitendes System auf Varianten der Datenstrukturen einstellen kann. Über diese Verfahrensweise können sich die Datenstrukturen der separaten Blöcke unabhängig vom Index weiterentwickeln.
+Um eine hohe Flexibilität zu ermöglichen, ist hier nur der Index spezifiziert. Obwohl es für viele Datenblöcke erprobte Datenstrukturen gibt, sind die Datenblöcke nicht streng spezifiziert. Statt dessen ist im Index der Typ (Id und Version) genannt, wodurch sich ein verarbeitendes System auf Varianten der Datenstrukturen einstellen kann. Über diese Verfahrensweise können sich die Datenstrukturen der separaten Blöcke unabhängig vom Index weiterentwickeln.
 
 ```json
 {
@@ -34,15 +34,15 @@ Um eine hohe Flexibilität zu ermöglichen, ist nur der Index spezifiziert. Obwo
 }
 ```
 
-Das obige Beispiel zeigt eine Minimalvariante einer UNit-Definition: Es gibt nur die Index-Datei und die Definition des User Interfaces ist nicht extern geführt, sondern wird inline übergeben.
+Das obige Beispiel zeigt eine Minimalvariante einer Unit-Definition: Es gibt nur die Index-Datei, und die Definition des User Interfaces ist nicht extern geführt, sondern wird inline übergeben.
 
 ## Allgemeine Daten
 
 * `id`: Id der Unit - wird durch den User vergeben
 * `uuid`: Universelle Id der Unit - wird automatisch vergeben. Die gesicherte Einmaligkeit hilft beim Wiederfinden von Varianten/Versionen einer Unit
-* `modifiedAt`: Markiert den Zeitpunkt der letzten Änderung der Index-Daten. Sollte sich ein externer Datenblock ändern, wird dessen `modifiedAt`-Wert neu gesetzt, aber der Wert für den Index ändert sich nicht.
-* Die optionalen Werte für `Label` und `Description` können Texte enthalten, die bei der Anzeige und der Verarbeitung der Unit genutzt werden.
-* Hinweis: Über den externen Datenblock `metadata` können weitere Metadaten übergeben werden (s. u.).
+* `modifiedAt`: Markiert den Zeitpunkt der letzten Änderung der Index-Daten. Sollte sich ein externer Datenblock ändern, wird dessen `modifiedAt`-Wert neu gesetzt, aber der `modifiedAt`-Wert für den Index ändert sich nicht.
+* Die optionalen Werte für `label` und `description` können Texte enthalten, die bei der Anzeige und der Verarbeitung der Unit genutzt werden.
+* Hinweis: Über den externen Datenblock `metadata` können weitere Unit-Metadaten übergeben werden (s. u.).
 
 ## UI-Definition `userInterface`
 
@@ -79,7 +79,7 @@ Folgende Datenblöcke werden auf diese Art referenziert:
 
 # Änderungen gegenüber der XML-Version
 
-Das XML-Format für die Unit wurde 2017 eingeführt. Seitdem hat das JSON-Format stark an Bedeutung in der Entwicklung vor allem von Webanwendungen gewonnen. Die Unterstützung in Programmiersprachen und in Entwicklungstools wurde sehr verbessert. Keiner der inzwischen eingeführten externen Datenblöcke ist in XML formuliert.
+Das XML-Format für die Unit wurde 2017 eingeführt. Seitdem hat das JSON-Format stark an Bedeutung in der Entwicklung vor allem von Webanwendungen gewonnen. Die Unterstützung in Programmiersprachen und in Entwicklungstools wurde sehr verbessert. Keiner der inzwischen eingeführten externen Datenblöcke für eine Unit ist in XML formuliert.
 
 Da mit der Änderung des Formates erhebliche Umstellungsarbeiten in den Programmierungen verbunden sind, liegt es nahe, die Gelegeheit auch für die Optimierung von Datenstrukturen zu nutzen. Folgende teilw. konzeptuelle Änderungen sind mit der Umstellung verbunden:
 
