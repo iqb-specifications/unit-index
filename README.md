@@ -1,6 +1,6 @@
 [![License: CC0-1.0](https://img.shields.io/badge/License-CC0_1.0-lightgrey.svg)](http://creativecommons.org/publicdomain/zero/1.0/)
 
-Rich notes are an addenum to data of an assessment unit. This repo consists of the specification.
+This is the specification of the data index of an assessment unit as used in IQB applications.
 
 Read more:
 
@@ -11,87 +11,93 @@ Read more:
 Change log see releases.
 
 <hr/>
-*work in progress*
+Achtung: Spezifikation und Dokumentation befinden sich derzeit in Überarbeitung. Für die wichtigsten Änderungen beim Wechsel vom XML- zum JSON-Format siehe [hier](#%C3%A4nderungen-gegen%C3%BCber-der-xml-version)!
 
 # Kurzdokumentation
 
-## Allgemeine Daten der Unit
+Leistungstests und Befragungen sind im Kontext von [TBA](https://iqb-berlin.github.io/tba-info/) Folgen von Units. Eine Unit soll mit ihren Daten zunächst unabhängig von einer Testdurchführung entwickelt werden. Die Platzierung in Tests erfolgt zu einem späteren Zeitpunkt. Es soll dann sehr einfach sein, eine Unit in einem anderen Test einzusetzen.
 
-* Hauptelement-Attribut `id`: Id der Unit - wird durch den User vergeben
-* Hauptelement-Attribut `uuid`: Universelle Id der Unit - wird automatisch vergeben. Die gesicherte Einmaligkeit hilft beim Wiederfinden von Varianten/Versionen einer Unit
-* Hauptelement-Attribut `lastChange`: Markiert den Zeitpunkt der letzten Änderung für alle Daten, die kein gesondertes `lastChange`-Attribut haben.
-* Die optionalen Tags `Label` und `Description` können Texte enthalten, die bei der Anzeige und der Verarbeitung der Unit genutzt werden. 
-* Das Tag `MetadataRef` verweist auf eine JSON-Datei mit Metadaten. Über den Typ wird die Spezifikation referenziert (z. B. [metadata-values@iqb-standard@3.0](https://iqb-specifications.github.io/metadata-values/)).
+Eine Unit wird über einen Index und separate Datenblöcke definiert. Die Datenblöcke und eventuelle weitere Abhängigkeiten sind im Index genannt. Es handelt sich beim Index und den separaten Datenblöcken um **Dateien**. Ein Transport bzw. Austausch von Units bedeutet also i.d.R. Dateitransfer.
 
-## UI-Definition der Unit `UIDefinition`, `UIDefinitionRef`
+Um eine hohe Flexibilität zu ermöglichen, ist nur der Index spezifiziert. Obwohl es für viele Datenblöcke erprobte Datenstrukturen gibt, sind die Datenblöcke nicht streng spezifiziert. Statt dessen ist im Index der Typ (Id und Version) genannt, wodurch sich ein verarbeitendes System auf Varianten der Datenstrukturen einstellen kann. Über diese Verfahrensweise können sich die Datenstrukturen der separaten Blöcke unabhängig vom Index weiterentwickeln.
 
-Eine Unit benötigt eine Definition für die Darstellung und ggf. Interaktion durch die Testperson. Dafür gibt es die syntaktisch identischen Tags `UIDefinition` und `UIDefinitionRef`. Sie unterscheiden sich in der Interpretation des Strings innerhalb des Tags:
+```json
+{
+    "id": "ME2236a01",
+    "uuid": "https://w3id.org/iqb/unit/e4r5t6z7",
+    "modifiedAt": "2026-04-09T13:15:10.977Z",
+    "label": "Ein wunderbarer Ausflug",
+    "userInterface": {
+        "player": "verona-player-simple@6.0",
+        "definitionInline": "<p>Bitte warte auf Anweisungen der Testleitung!</p>"
+    }
+}
+```
 
-* `UIDefinition`: Es wird die Definition direkt in die Unit-Xml geschrieben.
-* `UIDefinitionRef`: Die UI-Definition liegt als separate Datei vor. Als Inhalt des Tags wird ein Dateiname erwartet.
+Das obige Beispiel zeigt eine Minimalvariante einer UNit-Definition: Es gibt nur die Index-Datei und die Definition des User Interfaces ist nicht extern geführt, sondern wird inline übergeben.
 
-Folgende Attribute spezifizieren weitere Daten:
+## Allgemeine Daten
+
+* `id`: Id der Unit - wird durch den User vergeben
+* `uuid`: Universelle Id der Unit - wird automatisch vergeben. Die gesicherte Einmaligkeit hilft beim Wiederfinden von Varianten/Versionen einer Unit
+* `modifiedAt`: Markiert den Zeitpunkt der letzten Änderung der Index-Daten. Sollte sich ein externer Datenblock ändern, wird dessen `modifiedAt`-Wert neu gesetzt, aber der Wert für den Index ändert sich nicht.
+* Die optionalen Werte für `Label` und `Description` können Texte enthalten, die bei der Anzeige und der Verarbeitung der Unit genutzt werden.
+* Hinweis: Über den externen Datenblock `metadata` können weitere Metadaten übergeben werden (s. u.).
+
+## UI-Definition `userInterface`
+
+Eine Unit benötigt eine Definition für die Darstellung und ggf. Interaktion durch die Testperson.
 
 * `player`: Zur Anzeige in einem Verona-System muss ein zu der UI-Definition passender Player zur Verfügung stehen. Mit diesem Attribut wird die Id und ggf. die Version des Players angegeben.
 * `editor`: Zum Editieren in einem Verona-System kann ein zu der UI-Definition passender Editor genutzt werden. Mit diesem Attribut wird die Id und ggf. die Version des Editors angegeben.
-* `type`: Wenn die UI-Definition einer Spezifikation folgt, kann die Id und die Version dieser Spezifikation angegeben werden. Dadurch kann ein alternativer Player oder Editor zugewiesen werden, falls der oben Genannte nicht gefunden wird. Außerdem kann diese Angabe helfen, Kompatibilitätsprobleme zu finden und zu beheben. 
-* `lastChange`: Zeitpunkt der letzten Änderung
+* `type`: Wenn die UI-Definition einer Spezifikation folgt, kann die Id und die Version dieser Spezifikation angegeben werden. Dadurch kann ein alternativer Player oder Editor zugewiesen werden, falls der oben Genannte nicht gefunden wird. Außerdem kann diese Angabe helfen, Kompatibilitätsprobleme zu finden und zu beheben.
+* `definitionId`: Name einer externen Datei, in der die UI-Definition zu finden ist.
+* `definitionInline`: Alternativ kann die UI-Definition als String übergeben werden (Achtung: ggf. Zeichen maskieren!). Dazu muss dann `definitionId` fehlen oder leer sein. Hinweis: Es kann auch Player geben, die keine UI-Definition benötigen, wie z. B. kleine Spiele, die in den Testverlauf eingestreut werden.
+* `modifiedAt`: Zeitpunkt der letzten Änderung
+* `playerDependencies`, `editorDependencies`: Abhängigkeiten, die für die Funktionalität des Players bzw. Editors bereitgestellt werden müssen.
 
 ## Externe Datenblöcke
 
-Das Suffix "Ref" zeigt an, dass es sich um eine externe Datei handelt. Der Dateiname findet sich im Tag-Inhalt. Es gibt jeweils zwei optionale Attribute:
+Die folgende Tabelle listet alle möglichen externen Datenblöcke. Es handelt sich jeweils um dieselbe Datenstruktur:
 
-* `type`: Die externe Datei folgt i.d.R. einer Spezifikation. Die Id und die Version können im `type`-Attribut angegeben werden und helfen, Kompatibilitätsprobleme zu finden und zu beheben.
-* `lastChange`: Zeitpunkt der letzten Änderung
+* `id`: Dieser String wird genutzt, um den Datenblock zu finden. Es handelt sich üblicherweise um den Namen einer Datei, die im selben Verzeichnis liegt wie die Index-Datei.
+* `type`: Die externe Datei folgt i.d.R. einer Spezifikation. Die Id und die Version können im `type`-Attribut angegeben werden und helfen, Kompatibilitätsprobleme zu finden und zu beheben. Bei allen Datenblöcken gibt es einen Default-Typ (s. u.).
+* `modifiedAt`: Zeitpunkt der letzten Änderung
+* `dependencies`: Abhängigkeiten, die ggf. für die Verwendbarkeit des Datenblockes bereitgestellt werden müssen.
 
-Folgende Datenblöcke werden auf diese Art von der Unit-Xml referenziert (alle optional):
+Folgende Datenblöcke werden auf diese Art referenziert:
 
-| Tag           | Erläuterung                                                                                                                                                                                                              | Spezifikation IQB/Verona                                       | Konvention Dateiname                  |
+| Tag           | Erläuterung                                                                                                                                                                                                              | Default                                       | Konvention Dateiname                  |
 |---------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------|------------|
-| `MetadataRef` | **Metadaten der Unit**: In einem standardisierten JSON-Format werden Verweise auf Vokabulare und Metadatenprofile gespeichert.  | [Spezifikation](https://iqb-specifications.github.io/metadata-values/) | *.vomd.json |
-| `ItemsRef`     | **Items**: Liste von Items mit Metadaten und Zuordnung von Variablen  | [Spezifikation](https://iqb-specifications.github.io/unit-items/)  | *.voit.json |
-| `CodingSchemeRef`         | **Kodieranweisungen/Kodierschema**: Vorschriften, wie die Antworten der Unit zu kodieren sind. | [Spezifikation](https://iqb-specifications.github.io/coding-scheme/)   | *.vocs.json |
-| `CommentsRef` | **Kommentare**: Formatierte hierarchische Texte (Html ggf. mit eingebetteten Bildern) zur Diskussion während der Entwicklungszeit  | [Spezifikation](https://iqb-specifications.github.io/unit-comments/)   | *.voco.json |
-| `RichNotesRef` | **Formatierte Texte**: Formatierte Texte (Html ggf. mit eingebetteten Bildern) mit unterschiedlichen Verwendungszwecken (z. B. didaktische Kommentare, Transcript).  | [Spezifikation](https://iqb-specifications.github.io/unit-rich-notes/) |  *.vorn.json |
-| `VariablesRef` | **Variablen**: Es werden alle möglichen Variablen aufgeführt, die die Antwortwerte enthalten. Die JSON-Datei enthält zwei Einträge `baseVariables` und `derivedVariables`, jeweils ein Array der folgenden Datenstruktur | [Spezifikation](https://verona-interfaces.github.io/variable-info/)    | *.vova.json |
+| `codingScheme`         | **Kodieranweisungen/Kodierschema**: Vorschriften, wie die Antworten der Unit zu kodieren sind. | [iqb-coding-scheme](https://iqb-specifications.github.io/coding-scheme/)   | *.vocs.json |
+| `comments` | **Kommentare**: Formatierte hierarchische Texte (Html ggf. mit eingebetteten Bildern) zur Diskussion während der Entwicklungszeit  | [iqb-unit-comments](https://iqb-specifications.github.io/unit-comments/)   | *.voco.json |
+| `richNotes` | **Formatierte Texte/ Begleitmaterial**: Formatierte Texte (Html ggf. mit eingebetteten Bildern) mit unterschiedlichen Verwendungszwecken (z. B. didaktische Kommentare, Transcript) und Links.  | [iqb-unit-rich-notes](https://iqb-specifications.github.io/unit-rich-notes/) |  *.vorn.json |
+| `metadata` | **Metadaten der Unit**: In einem standardisierten JSON-Format werden Verweise auf Vokabulare und Metadatenprofile gespeichert.  | [metadata-values](https://iqb-specifications.github.io/metadata-values/) | *.vomd.json |
+| `items`     | **Items**: Liste von Items mit Metadaten und Zuordnung von Variablen  | [iqb-unit-items](https://iqb-specifications.github.io/unit-items/)  | *.voit.json |
+| `variables` | **Variablen**: Es werden alle möglichen Variablen aufgeführt, die die Antwortwerte enthalten. Die JSON-Datei enthält zwei Einträge `baseVariables` und `derivedVariables`, jeweils ein Array der folgenden Verona-Datenstruktur | [variable-info](https://verona-interfaces.github.io/variable-info/)    | *.vova.json |
 
 
-## Abhängigkeiten `Dependencies`
+# Änderungen gegenüber der XML-Version
 
-Die Unit-Xml enthält bereits Namen von Dateien, die zusätzlich vorhanden sein müssen: Player, Editor, Unit-Kommentare usw. Darüber hinaus kann es weitere Dateien oder Dienste geben, die in einem bestimmten Zusammenhang für das Funktionieren der Unit oder die Verarbeitung der Antworten erforderlich sind. Das Tag `Dependencies` schließt Definitionen solcher Anhängigkeiten ein.
+Das XML-Format für die Unit wurde 2017 eingeführt. Seitdem hat das JSON-Format stark an Bedeutung in der Entwicklung vor allem von Webanwendungen gewonnen. Die Unterstützung in Programmiersprachen und in Entwicklungstools wurde sehr verbessert. Keiner der inzwischen eingeführten externen Datenblöcke ist in XML formuliert.
 
+Da mit der Änderung des Formates erhebliche Umstellungsarbeiten in den Programmierungen verbunden sind, liegt es nahe, die Gelegeheit auch für die Optimierung von Datenstrukturen zu nutzen. Folgende teilw. konzeptuelle Änderungen sind mit der Umstellung verbunden:
 
-### Bezug zu Datenblock
+## Geändert
 
-Im Attribut `for` muss angegeben werden, für welchen Datenbereich die Abhängigkeit besteht. Dies ist wichtig, wenn nur Teile einer Unit verwendet werden sollen und dann transparent sein muss, ob eine Abhängigkeit in einem bestimmten Anwendungsfall relevant ist.
+* Die Metadaten sind aufgeteilt in die fixen Eigenschaften `id`, `uuid`, `label`, `modifiedAt` und `description` einerseits und einem externen Datenblock `metadata` andererseits. Letzterer folgt den im TBA-System des IQB etablierten Datenstrukturen.
+* Die alte externe JSON-Datenstruktur `Metadata/Reference` war ein Mix aus Unit-Metadaten und Items mit ihren Metadaten. Dies ist aufgelöst in (a) externer Datenblock für Unit-Metadaten und (b) externer Datenblock für Items mit eigener Spezifikation.
+* Unit-Definition
+  - Die Benennung `Definition` ist zu allgemein und wurde ersetzt durch `userInterface`, da es sich hier um die Definition der Präsentation und Interaktion handelt.
+  - Der "Inhalt" der UI-Definition wurde getrennt von den anderen UI-Eigenschaften. Es kann ein Player definiert werden, auch wenn es keine UI-Definition im eigentlichen Sinne gibt (z. B: Minispiel-Player ohne Parameter).
+  - Die sonstigen Abhängigkeiten sind direkt im Datenblock platziert, zu dem sie gehören.
+* Der Schemer wird nicht mehr explizit zugewiesen. Da absehbar stets nur die aktuelle Version des IQB-Schemers genutzt wird, ist statt dessen `type` zu nutzen, wenn man etwas anderes möchte. Es ist sehr unwahrscheinlich, dass man eine frühere Schemer-Version braucht.
+* Die Abhängigkeiten sind keine eigene Liste mehr, sondern zu den Orten gewandert, in denen sie jeweils relevant sind.
+* Die Variablen können jetzt - da sie ein externer Datenblock sind - direkt der JSON-Verona-Spezifikation folgen.
 
-Mögliche Werte sind `player`, `editor`, `schemer`, `coder` und `rich-note`.
+## Hinzugefügt
 
-### Typ
-
-Es gibt verschiedene Typen der Abhängigkeit:
-
-* `File`: Diese Abhängigkeit nennt einen konkreten Namen einer Datei. Beispiel: Geogebra-Bibliothek zum Nachladen in einen Player.
-* `Service`: Hier wird spezifiziert, dass ein konkreter Webservice online verfügbar sein muss. Es muss eine Url angegeben werden. Beispiel: Online-Dienst für die KI-gestützte Kodierung von Antworten. 
-* `SymLink`: Hier wird keine spezifische Abhängigkeit definiert, sondern eine symbolische. Welche Programmierung oder welcher Dienst dann konkret bereitgestellt wird, entscheidet sich durch andere Randbedingungen. Beispiel: Ein Player erfordert ein Widget. 
-
-# Änderungen gegenüber der letzten XML-Version
-
-- Add CommentsRef
-- Add RichNotesRef
-- Replace Metadata/Reference by MetadataRef
-- Move id from Metadata tag to root attribute
-- Move label from Metadata to root
-- Move description from Metadata to root
-- Remove Metadata tag
-- Add viewAnchor to variable
-- Simplify types (shorter definition)
-- Remove id in xsd schema root
-- Rename Definition to UIDefinition
-- Rename DefinitionRef to UIDefinitionRef
-- Remove deprecated attributes/tags
-- Rename schemeType to type in CodingSchemeRef
-- Remove BaseVariables and derivedVariables (use VariablesRef JSON!)
-- Add uuid as attribute to root
-- Add lastChanged to root
-- Add in Dependencies: SymLink as type, rich-notes as target 
+* Speicherung von Kommentaren, die z. B. in der Entwicklungsumgebung IQB-Studio vergeben wurden
+* Speicherung von formatierten Texten (rich notes), mit denen Transripte und didaktische Kommentierungen implementiert werden können (Text, Bilder, Links)
+* die Daten eines Items enthalten jetzt die Möglichkeit, neben der Quellvariable eine weitere Variable zu nennen, die für die Anzeige des Items genutzt werden kann (visualAnchorVariable)
+* die Unit erhält eine `uuid`
