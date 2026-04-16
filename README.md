@@ -51,8 +51,8 @@ Eine Unit benötigt eine Definition für die Darstellung und ggf. Interaktion du
 * `player`: Zur Anzeige in einem Verona-System muss ein zu der UI-Definition passender Player zur Verfügung stehen. Mit diesem Attribut wird die Id und ggf. die Version des Players angegeben.
 * `editor`: Zum Editieren in einem Verona-System kann ein zu der UI-Definition passender Editor genutzt werden. Mit diesem Attribut wird die Id und ggf. die Version des Editors angegeben.
 * `type`: Wenn die UI-Definition einer Spezifikation folgt, kann die Id und die Version dieser Spezifikation angegeben werden. Dadurch kann ein alternativer Player oder Editor zugewiesen werden, falls der oben Genannte nicht gefunden wird. Außerdem kann diese Angabe helfen, Kompatibilitätsprobleme zu finden und zu beheben.
-* `definitionId`: Name einer externen Datei, in der die UI-Definition zu finden ist.
-* `definitionInline`: Alternativ kann die UI-Definition als String übergeben werden (Achtung: ggf. Zeichen maskieren!). Dazu muss dann `definitionId` fehlen oder leer sein. Hinweis: Es kann auch Player geben, die keine UI-Definition benötigen, wie z. B. kleine Spiele, die in den Testverlauf eingestreut werden.
+* `definition`: Hier ist die eigentliche UI-Definition zu finden, die der Player für die Präsentation und ggf. Interaktion bekommen soll. Es kann sich hier um einen Dateinamen handeln mit diesem Inhalt oder um die (maskierte/stringified) Definition selbst. Die Unterscheidung wird über den Schalter `isDefinitionInline` getroffen.
+* `isDefinitionInline`: Legt fest, wie die Eigenschaft `definition` zu interpretieren ist. Wenn false (Default-Wert), dann ist dort ein Key als externer Datenblock gespeichert. Wenn true, dann ist der Inhalt von `definition` direkt die UI-Definition. Hinweis: Es kann auch Player geben, die keine UI-Definition benötigen, wie z. B. kleine Spiele, die in den Testverlauf eingestreut werden. Dann fehlt `definition` oder ist leer.
 * `modifiedAt`: Zeitpunkt der letzten Änderung
 * `playerDependencies`, `editorDependencies`: Abhängigkeiten, die für die Funktionalität des Players bzw. Editors bereitgestellt werden müssen.
 
@@ -88,9 +88,8 @@ Da mit der Änderung des Formates erhebliche Umstellungsarbeiten in den Programm
 * Die Metadaten sind aufgeteilt in die fixen Eigenschaften `id`, `uuid`, `label`, `modifiedAt` und `description` einerseits und einem externen Datenblock `metadata` andererseits. Letzterer folgt den im TBA-System des IQB etablierten Datenstrukturen.
 * Die alte externe JSON-Datenstruktur `Metadata/Reference` war ein Mix aus Unit-Metadaten und Items mit ihren Metadaten. Dies ist aufgelöst in (a) externer Datenblock für Unit-Metadaten und (b) externer Datenblock für Items mit eigener Spezifikation.
 * Unit-Definition
-  - Die Benennung `Definition` ist zu allgemein und wurde ersetzt durch `userInterface`, da es sich hier um die Definition der Präsentation und Interaktion handelt.
+  - Die Benennung `Definition` ist zu allgemein und wurde in `userInterface` gesetzt, da es sich hier um die Definition der Präsentation und Interaktion handelt.
   - Der "Inhalt" der UI-Definition wurde getrennt von den anderen UI-Eigenschaften. Es kann ein Player definiert werden, auch wenn es keine UI-Definition im eigentlichen Sinne gibt (z. B: Minispiel-Player ohne Parameter).
-  - Die sonstigen Abhängigkeiten sind direkt im Datenblock platziert, zu dem sie gehören.
 * Der Schemer wird nicht mehr explizit zugewiesen. Da absehbar stets nur die aktuelle Version des IQB-Schemers genutzt wird, ist statt dessen `type` zu nutzen, wenn man etwas anderes möchte. Es ist sehr unwahrscheinlich, dass man eine frühere Schemer-Version braucht.
 * Die Abhängigkeiten sind keine eigene Liste mehr, sondern zu den Orten gewandert, in denen sie jeweils relevant sind.
 * Die Variablen können jetzt - da sie ein externer Datenblock sind - direkt der JSON-Verona-Spezifikation folgen.
