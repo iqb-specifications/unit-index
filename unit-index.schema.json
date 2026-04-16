@@ -23,6 +23,7 @@
     },
     "modifiedAt": {
       "type": "string",
+      "format": "date-time",
       "description": "Timestamp of last change. This is related to the index, not to the separate data blocks.",
       "examples": [
         "2026-04-09T13:15:10.977Z"
@@ -78,22 +79,22 @@
             "iqb-aspect@5.0"
           ]
         },
-        "definitionId": {
+        "definition": {
           "type": "string",
-          "description": "Key to find the user interface definition. Usually this is the full filename without path.",
+          "description": "Key to find the user interface definition (i.e. filename) or full stringified UI definition - depending on 'isDefinitionInline'.",
           "examples": [
-            "H7876d4.voud.json"
+            "H7876d4.voud.json",
+            "<p>Bitte warte auf die Freigabe durch die Testleitung!</p>"
           ]
         },
-        "definitionInline": {
-          "type": "string",
-          "description": "Full stringified UI definition. If definitionId is given too, this property will be ignored.",
-          "examples": [
-            "Bitte warte auf die Freigabe durch die Testleitung!"
-          ]
+        "isDefinitionInline": {
+          "type": "boolean",
+          "description": "If true the property 'definition' contains the full stringified UI definition.",
+          "default": false
         },
         "modifiedAt": {
           "type": "string",
+          "format": "date-time",
           "description": "Timestamp of last change.",
           "examples": [
             "2026-04-09T13:15:10.977Z"
@@ -149,6 +150,7 @@
         },
         "modifiedAt": {
           "type": "string",
+          "format": "date-time",
           "description": "Timestamp of last change. This is independent from the DateTime of the file in the file system.",
           "examples": [
             "2026-04-09T13:15:10.977Z"
