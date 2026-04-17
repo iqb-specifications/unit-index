@@ -185,7 +185,8 @@
           "description": "Used to specify the access mode of the dependency",
           "enum": [
             "WEB_SERVICE",
-            "FILE"
+            "FILE",
+            "FILE_UNPACK"
           ],
           "default": "FILE"
         }

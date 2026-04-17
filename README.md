@@ -11,7 +11,7 @@ Read more:
 Change log see releases.
 
 <hr/>
-Achtung: Spezifikation und Dokumentation befinden sich derzeit in Überarbeitung. Für die wichtigsten Änderungen beim Wechsel vom XML- zum JSON-Format siehe [unten](https://github.com/iqb-specifications/unit-index?tab=readme-ov-file#%C3%A4nderungen-gegen%C3%BCber-der-xml-version)!
+Achtung: Spezifikation und Dokumentation befinden sich derzeit in Überarbeitung. Für die wichtigsten Änderungen beim Wechsel vom XML- zum JSON-Format siehe [unten](https://github.com/iqb-specifications/unit-index?tab=readme-ov-file#Vergleich-zur-XML-Version)!
 
 # Kurzdokumentation
 
@@ -43,6 +43,17 @@ Das obige Beispiel zeigt eine Minimalvariante einer Unit-Definition: Es gibt nur
 * `modifiedAt`: Markiert den Zeitpunkt der letzten Änderung der Index-Daten. Sollte sich ein externer Datenblock ändern, wird dessen `modifiedAt`-Wert neu gesetzt, aber der `modifiedAt`-Wert für den Index ändert sich nicht.
 * Die optionalen Werte für `label` und `description` können Texte enthalten, die bei der Anzeige und der Verarbeitung der Unit genutzt werden.
 * Hinweis: Über den externen Datenblock `metadata` können weitere Unit-Metadaten übergeben werden (s. u.).
+
+## Abhängigkeiten/dependencies
+
+In diesem Dokument werden an mehreren Stellen Abhängigkeiten definiert. Das sind Referenzen zu Ressourcen, die notwendig sind für die entsprechende Funktion. Die Struktur ist stets gleich:
+
+* `id` wird benutzt, um die Ressource zu finden. Es kann sich z. B. um eine Url handeln oder einen Dateinamen
+* `mode` kann folgende Werte annehmen:
+  - `WEB_SERVICE`: Online-Dienst
+  - `FILE`: Datei, die unverändert über GET angefordert wird
+  - `FILE_UNPACK`: Zip-Archiv, das für die Bereitstellung zunächst ausgepackt wird. Es werden danach die einzelnen darin enthaltenen Dateien angefordert, ggf. mit dem Pfad, den die Datei im Zip-Archiv hat
+  - `FILE_STREAM`: Mediendatei, deren Bereitstellung auf den Abruf durch Streaming optimiert wird
 
 ## UI-Definition `userInterface`
 
