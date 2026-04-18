@@ -186,7 +186,8 @@
           "enum": [
             "WEB_SERVICE",
             "FILE",
-            "FILE_UNPACK"
+            "FILE_UNPACK",
+            "WIDGET"
           ],
           "default": "FILE"
         }

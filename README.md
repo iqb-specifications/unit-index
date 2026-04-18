@@ -48,12 +48,13 @@ Das obige Beispiel zeigt eine Minimalvariante einer Unit-Definition: Es gibt nur
 
 In diesem Dokument werden an mehreren Stellen Abhängigkeiten definiert. Das sind Referenzen zu Ressourcen, die notwendig sind für die entsprechende Funktion. Die Struktur ist stets gleich:
 
-* `id` wird benutzt, um die Ressource zu finden. Es kann sich z. B. um eine Url handeln oder einen Dateinamen
+* `id` wird benutzt, um die Ressource zu finden. Bedeutung siehe `mode`.
 * `mode` kann folgende Werte annehmen:
-  - `WEB_SERVICE`: Online-Dienst
-  - `FILE`: Datei, die unverändert über GET angefordert wird
-  - `FILE_UNPACK`: Zip-Archiv, das für die Bereitstellung zunächst ausgepackt wird. Es werden danach die einzelnen darin enthaltenen Dateien angefordert, ggf. mit dem Pfad, den die Datei im Zip-Archiv hat
-  - `FILE_STREAM`: Mediendatei, deren Bereitstellung auf den Abruf durch Streaming optimiert wird
+  - `WEB_SERVICE`: Online-Dienst. Die `id` ist eine Url.
+  - `FILE`: Datei, die ohne weitere Bearbeitung über GET bereitgestellt wird. Die `id` ist ein Dateiname.
+  - `FILE_UNPACK`: Zip-Archiv, das für die Bereitstellung zunächst ausgepackt wird. Es werden danach die einzelnen darin enthaltenen Dateien angefordert, ggf. mit dem Pfad, den die Datei im Zip-Archiv hat. Die `id` ist ein Dateiname.
+  - `FILE_STREAM`: Mediendatei, deren Bereitstellung auf den Abruf durch Streaming optimiert wird. Die `id` ist ein Dateiname.
+  - `WIDGET`: Frontend-Modul nach [Verona-Standard](https://verona-interfaces.github.io/widget-docs/). Die `id` ist ein Key entsprechend der Widget-Spezifikation (z. B. `CALC` oder `MOLECULE_EDITOR`).
 
 ## UI-Definition `userInterface`
 
