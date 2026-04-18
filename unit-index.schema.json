@@ -187,6 +187,7 @@
             "WEB_SERVICE",
             "FILE",
             "FILE_UNPACK",
+            "FILE_STREAM",
             "WIDGET"
           ],
           "default": "FILE"
