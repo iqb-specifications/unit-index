@@ -1,5 +1,5 @@
 {
-  "$id": "unit-index@18.0",
+  "$id": "unit-index@18.1",
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "Unit Index",
   "description": "Specification for the main data file for assessment units.",
@@ -56,7 +56,14 @@
         "playerDependencies": {
           "type": "array",
           "items": {
-            "$ref": "#/$defs/externalDependency"
+            "oneOf": [
+              {
+                "$ref": "#/$defs/externalDependencyWidget"
+              },
+              {
+                "$ref": "#/$defs/externalDependencyFile"
+              }
+            ]
           }
         },
         "editor": {
@@ -69,7 +76,14 @@
         "editorDependencies": {
           "type": "array",
           "items": {
-            "$ref": "#/$defs/externalDependency"
+            "oneOf": [
+              {
+                "$ref": "#/$defs/externalDependencyWidget"
+              },
+              {
+                "$ref": "#/$defs/externalDependencyFile"
+              }
+            ]
           }
         },
         "type": {
@@ -159,7 +173,14 @@
         "dependencies": {
           "type": "array",
           "items": {
-            "$ref": "#/$defs/externalDependency"
+            "oneOf": [
+              {
+                "$ref": "#/$defs/externalDependencyWidget"
+              },
+              {
+                "$ref": "#/$defs/externalDependencyFile"
+              }
+            ]
           }
         }
       },
@@ -168,33 +189,40 @@
       ],
       "additionalProperties": false
     },
-    "externalDependency": {
+    "externalDependencyFile": {
       "type": "object",
-      "description": "External file or service this unit's running or data processing depends on.",
+      "description": "External file this unit's (and possibly other units' as well) running or data processing depends on.",
       "properties": {
-        "id": {
+        "fileName": {
           "type": "string",
-          "description": "Key to find the dependency. This can be a filename or url depending on the mode property.",
           "examples": [
-            "GeoGebra.itcr.zip",
-            "https://short-answer.IfBQ-codingservice.de"
+            "GeoGebra.itcr.zip"
           ]
         },
-        "mode": {
+        "unpackBeforeProviding": {
+          "type": "boolean",
+          "description": "The file is to be an archive and must be unpacked to be delivered. The type of archive is detected via file extension - default: zip.",
+          "default": false
+        },
+        "httpResponseMode": {
           "type": "string",
-          "description": "Used to specify the access mode of the dependency",
+          "description": "The mode of response leads to different parameter sets to enhance performance.",
           "enum": [
-            "WEB_SERVICE",
-            "FILE",
-            "FILE_UNPACK",
-            "FILE_STREAM",
-            "WIDGET"
+            "STANDARD",
+            "STREAM"
           ],
-          "default": "FILE"
+          "default": "STANDARD"
         }
       },
-      "required": ["id"],
+      "required": ["fileName"],
       "additionalProperties": false
+    },
+    "externalDependencyWidget": {
+      "type": "string",
+      "description": "External verona widget module the unit will use.",
+      "minLength": 2,
+      "pattern": "^[A-Z_]+$",
+      "examples": ["CALC", "MOLECULE_EDITOR"]
     }
   }
 }
