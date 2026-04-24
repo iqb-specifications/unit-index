@@ -1,20 +1,21 @@
 asyncapi: 2.5.0
 info:
   title: unit-index
-  description: Specification for the main data file for assessment units.
+  description: JSON schema and reference documentation for the main data file for assessment units.
   license:
     name: CC0 1.0
     url: https://creativecommons.org/publicdomain/zero/1.0/
-  version: " - click on schema id to expand"
+  version: "18.1"
   contact:
     name: Home of iqb-specifications (German only)
     url: https://iqb-specifications.github.io/
 channels:
-  iqb_data_structures:
+  unit_index:
+    description: Reference entry point for the unit index schema.
     subscribe:
-      operationId: 'Please select one schema'
+      operationId: view_unit_index_schema
       message:
-        messageId: select_schema
+        messageId: unit_index
 components:
   schemas:
     unit_index:

@@ -55,6 +55,7 @@
         },
         "playerDependencies": {
           "type": "array",
+          "description": "Optional Verona widgets or files required by the player at runtime.",
           "items": {
             "oneOf": [
               {
@@ -75,6 +76,7 @@
         },
         "editorDependencies": {
           "type": "array",
+          "description": "Optional Verona widgets or files required by the editor at runtime.",
           "items": {
             "oneOf": [
               {
@@ -172,6 +174,7 @@
         },
         "dependencies": {
           "type": "array",
+          "description": "Optional Verona widgets or files required to use this data block.",
           "items": {
             "oneOf": [
               {
@@ -195,6 +198,7 @@
       "properties": {
         "fileName": {
           "type": "string",
+          "description": "Filename of the external file to be provided alongside the unit.",
           "examples": [
             "GeoGebra.itcr.zip"
           ]

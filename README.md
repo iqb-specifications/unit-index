@@ -11,7 +11,7 @@ Read more:
 Change log see releases.
 
 <hr/>
-Achtung: Spezifikation und Dokumentation befinden sich derzeit in Überarbeitung. Für die wichtigsten Änderungen beim Wechsel vom XML- zum JSON-Format siehe [unten](https://github.com/iqb-specifications/unit-index?tab=readme-ov-file#Vergleich-zur-XML-Version)!
+Hinweis: Die JSON-Spezifikation ist nutzbar, diese README wird aber weiterhin präzisiert. Im Zweifel ist das JSON-Schema maßgeblich. Für die wichtigsten Änderungen beim Wechsel vom XML- zum JSON-Format siehe [unten](#änderungen-gegenüber-der-xml-version).
 
 # Kurzdokumentation
 
@@ -28,7 +28,7 @@ Um eine hohe Flexibilität zu ermöglichen, ist hier nur der Index spezifiziert.
     "modifiedAt": "2026-04-09T13:15:10.977Z",
     "label": "Ein wunderbarer Ausflug",
     "userInterface": {
-        "player": "verona-player-simple@6.0",
+        "player": "iqb-player-speedtest@4.1",
         "definition": "<p>Bitte warte auf Anweisungen der Testleitung!</p>",
         "isDefinitionInline": true
     }
@@ -36,6 +36,34 @@ Um eine hohe Flexibilität zu ermöglichen, ist hier nur der Index spezifiziert.
 ```
 
 Das obige Beispiel zeigt eine Minimalvariante einer Unit-Definition: Es gibt nur die Index-Datei, und die Definition des User Interfaces ist nicht extern geführt, sondern wird inline übergeben.
+
+Eine typische Dateistruktur mit externen Datenblöcken kann z. B. so aussehen:
+
+```text
+ME2236a01/
+|-- unit-index.json
+|-- ui-definition.html
+|-- items.voit.json
+`-- variables.vova.json
+```
+
+Der zugehörige Index verweist dann auf diese Dateien:
+
+```json
+{
+    "id": "ME2236a01",
+    "userInterface": {
+        "player": "iqb-player-speedtest@4.1",
+        "definition": "ui-definition.html"
+    },
+    "items": {
+        "id": "items.voit.json"
+    },
+    "variables": {
+        "id": "variables.vova.json"
+    }
+}
+```
 
 ## Allgemeine Daten
 
@@ -47,13 +75,26 @@ Das obige Beispiel zeigt eine Minimalvariante einer Unit-Definition: Es gibt nur
 
 ## Abhängigkeiten/dependencies
 
-In diesem Dokument werden an mehreren Stellen Abhängigkeiten definiert. Das sind Referenzen zu Ressourcen, die notwendig sind für die entsprechende Funktion. Es handelt sich stets um ein Array, das mehrere Typen als Einträge haben kann:
+In diesem Dokument werden an mehreren Stellen Abhängigkeiten definiert. Das sind Referenzen zu Ressourcen, die zusätzlich zur Index-Datei bereitgestellt werden müssen. Im aktuellen Schema gibt es dafür zwei Formen:
 
-* **Datei**: Folgende Eigenschaften spezifizieren diese Datei:
-  - `fileName`: Name der Datei relativ zur Index-Datei (erforderlich)
-  - `unpackBeforeProviding`: Wenn `true`, dann erfolgt der Zugriff (Request) nicht auf die Datei selbst, sondern es handelt sich um ein Datei-Archiv mit mehreren Dateien. Dieses Archiv (z. B. ZIP) muss erst ausgepackt werden, und der Zugriff erfolgt dann auf eine dieser Dateien. Der Typ des Archives ist standardmäßig zip (Steuerung ggf. über Dateiendung).
-  - `httpResponseMode`: Bei der Auslieferung können Sets von Parametern die Performance verbessern. Beim Modus `STREAM` sollte beispielsweise eine variable Bitrate bei der multipart-Auslieferung eingestellt werden. `STANDARD` wäre ein normales GET.
-* **Widget**: Es wird nur ein String übergeben, der den Typ des [Verona-Widgets](https://verona-interfaces.github.io/widget-docs/) angibt. Es wird bei Widgets kein spezifisches Modul angegeben, sondern es muss irgendein Modul dieser Art verfügbar sein.
+* **Widget-Abhängigkeit**: Ein String mit einer Widget-Id nach [Verona-Standard](https://verona-interfaces.github.io/widget-docs/), z. B. `CALC` oder `MOLECULE_EDITOR`.
+* **Datei-Abhängigkeit**: Ein Objekt mit folgenden Eigenschaften:
+  - `fileName`: Dateiname der bereitzustellenden Datei
+  - `unpackBeforeProviding`: Wenn `true`, wird die Datei vor der Bereitstellung entpackt
+  - `httpResponseMode`: Antwortmodus für die Auslieferung. `STANDARD` ist der Default, `STREAM` ist für Streaming optimiert.
+
+Beispiel:
+
+```json
+"playerDependencies": [
+    "CALC",
+    {
+        "fileName": "sonderausgabe4.zip",
+        "unpackBeforeProviding": true,
+        "httpResponseMode": "STREAM"
+    }
+]
+```
 
 ## UI-Definition `userInterface`
 
@@ -62,8 +103,8 @@ Eine Unit benötigt eine Definition für die Darstellung und ggf. Interaktion du
 * `player`: Zur Anzeige in einem Verona-System muss ein zu der UI-Definition passender Player zur Verfügung stehen. Mit diesem Attribut wird die Id und ggf. die Version des Players angegeben.
 * `editor`: Zum Editieren in einem Verona-System kann ein zu der UI-Definition passender Editor genutzt werden. Mit diesem Attribut wird die Id und ggf. die Version des Editors angegeben.
 * `type`: Wenn die UI-Definition einer Spezifikation folgt, kann die Id und die Version dieser Spezifikation angegeben werden. Dadurch kann ein alternativer Player oder Editor zugewiesen werden, falls der oben Genannte nicht gefunden wird. Außerdem kann diese Angabe helfen, Kompatibilitätsprobleme zu finden und zu beheben.
-* `definition`: Hier ist die eigentliche UI-Definition zu finden, die der Player für die Präsentation und ggf. Interaktion bekommen soll. Es kann sich hier um einen Dateinamen handeln mit diesem Inhalt oder um die (maskierte/stringified) Definition selbst. Die Unterscheidung wird über den Schalter `isDefinitionInline` getroffen.
-* `isDefinitionInline`: Legt fest, wie die Eigenschaft `definition` zu interpretieren ist. Wenn false (Default-Wert), dann ist dort ein Key als externer Datenblock gespeichert. Wenn true, dann ist der Inhalt von `definition` direkt die UI-Definition. Hinweis: Es kann auch Player geben, die keine UI-Definition benötigen, wie z. B. kleine Spiele, die in den Testverlauf eingestreut werden. Dann fehlt `definition` oder ist leer.
+* `definition`: Hier ist die eigentliche UI-Definition zu finden, die der Player für die Präsentation und ggf. Interaktion bekommen soll. Wenn `isDefinitionInline` nicht gesetzt oder `false` ist, ist hier üblicherweise ein Dateiname gespeichert.
+* `isDefinitionInline`: Legt fest, wie die Eigenschaft `definition` zu interpretieren ist. Wenn `true`, dann ist der Inhalt von `definition` direkt die UI-Definition. Hinweis: Es kann auch Player geben, die keine UI-Definition benötigen, wie z. B. kleine Spiele, die in den Testverlauf eingestreut werden. Dann fehlt `definition` oder ist leer.
 * `modifiedAt`: Zeitpunkt der letzten Änderung
 * `playerDependencies`, `editorDependencies`: Abhängigkeiten, die für die Funktionalität des Players bzw. Editors bereitgestellt werden müssen.
 
@@ -74,7 +115,7 @@ Die folgende Tabelle listet alle möglichen externen Datenblöcke. Es handelt si
 * `id`: Dieser String wird genutzt, um den Datenblock zu finden. Es handelt sich üblicherweise um den Namen einer Datei, die im selben Verzeichnis liegt wie die Index-Datei.
 * `type`: Die externe Datei folgt i.d.R. einer Spezifikation. Die Id und die Version können im `type`-Attribut angegeben werden und helfen, Kompatibilitätsprobleme zu finden und zu beheben. Bei allen Datenblöcken gibt es einen Default-Typ (s. u.).
 * `modifiedAt`: Zeitpunkt der letzten Änderung
-* `dependencies`: Abhängigkeiten, die ggf. für die Verwendbarkeit des Datenblockes bereitgestellt werden müssen.
+* `dependencies`: Abhängigkeiten, die ggf. für die Verwendbarkeit des Datenblockes bereitgestellt werden müssen. Sie folgen derselben Struktur wie oben beschrieben.
 
 Folgende Datenblöcke werden auf diese Art referenziert:
 
@@ -92,7 +133,7 @@ Folgende Datenblöcke werden auf diese Art referenziert:
 
 Das XML-Format für die Unit wurde 2017 eingeführt. Seitdem hat das JSON-Format stark an Bedeutung in der Entwicklung vor allem von Webanwendungen gewonnen. Die Unterstützung in Programmiersprachen und in Entwicklungstools wurde sehr verbessert. Keiner der inzwischen eingeführten externen Datenblöcke für eine Unit ist in XML formuliert.
 
-Da mit der Änderung des Formates erhebliche Umstellungsarbeiten in den Programmierungen verbunden sind, liegt es nahe, die Gelegeheit auch für die Optimierung von Datenstrukturen zu nutzen. Folgende teilw. konzeptuelle Änderungen sind mit der Umstellung verbunden:
+Da mit der Änderung des Formates erhebliche Umstellungsarbeiten in den Programmierungen verbunden sind, liegt es nahe, die Gelegenheit auch für die Optimierung von Datenstrukturen zu nutzen. Folgende teilw. konzeptuelle Änderungen sind mit der Umstellung verbunden:
 
 ## Geändert
 
@@ -100,7 +141,7 @@ Da mit der Änderung des Formates erhebliche Umstellungsarbeiten in den Programm
 * Die alte externe JSON-Datenstruktur `Metadata/Reference` war ein Mix aus Unit-Metadaten und Items mit ihren Metadaten. Dies ist aufgelöst in (a) externer Datenblock für Unit-Metadaten und (b) externer Datenblock für Items mit eigener Spezifikation.
 * Unit-Definition
   - Die Benennung `Definition` ist zu allgemein und wurde in `userInterface` gesetzt, da es sich hier um die Definition der Präsentation und Interaktion handelt.
-  - Der "Inhalt" der UI-Definition wurde getrennt von den anderen UI-Eigenschaften. Es kann ein Player definiert werden, auch wenn es keine UI-Definition im eigentlichen Sinne gibt (z. B: Minispiel-Player ohne Parameter).
+  - Der "Inhalt" der UI-Definition wurde getrennt von den anderen UI-Eigenschaften. Es kann ein Player definiert werden, auch wenn es keine UI-Definition im eigentlichen Sinne gibt (z. B. Minispiel-Player ohne Parameter).
 * Der Schemer wird nicht mehr explizit zugewiesen. Da absehbar stets nur die aktuelle Version des IQB-Schemers genutzt wird, ist statt dessen `type` zu nutzen, wenn man etwas anderes möchte. Es ist sehr unwahrscheinlich, dass man eine frühere Schemer-Version braucht.
 * Die Abhängigkeiten sind keine eigene Liste mehr, sondern zu den Orten gewandert, in denen sie jeweils relevant sind.
 * Die Variablen können jetzt - da sie ein externer Datenblock sind - direkt der JSON-Verona-Spezifikation folgen.
@@ -108,6 +149,6 @@ Da mit der Änderung des Formates erhebliche Umstellungsarbeiten in den Programm
 ## Hinzugefügt
 
 * Speicherung von Kommentaren, die z. B. in der Entwicklungsumgebung IQB-Studio vergeben wurden
-* Speicherung von formatierten Texten (rich notes), mit denen Transripte und didaktische Kommentierungen implementiert werden können (Text, Bilder, Links)
+* Speicherung von formatierten Texten (rich notes), mit denen Transkripte und didaktische Kommentierungen implementiert werden können (Text, Bilder, Links)
 * die Daten eines Items enthalten jetzt die Möglichkeit, neben der Quellvariable eine weitere Variable zu nennen, die für die Anzeige des Items genutzt werden kann (visualAnchorVariable)
 * die Unit erhält eine `uuid`
