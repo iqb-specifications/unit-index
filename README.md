@@ -29,7 +29,8 @@ Um eine hohe Flexibilität zu ermöglichen, ist hier nur der Index spezifiziert.
     "label": "Ein wunderbarer Ausflug",
     "userInterface": {
         "player": "verona-player-simple@6.0",
-        "definitionInline": "<p>Bitte warte auf Anweisungen der Testleitung!</p>"
+        "definition": "<p>Bitte warte auf Anweisungen der Testleitung!</p>",
+        "isDefinitionInline": true
     }
 }
 ```
@@ -46,15 +47,13 @@ Das obige Beispiel zeigt eine Minimalvariante einer Unit-Definition: Es gibt nur
 
 ## Abhängigkeiten/dependencies
 
-In diesem Dokument werden an mehreren Stellen Abhängigkeiten definiert. Das sind Referenzen zu Ressourcen, die notwendig sind für die entsprechende Funktion. Die Struktur ist stets gleich:
+In diesem Dokument werden an mehreren Stellen Abhängigkeiten definiert. Das sind Referenzen zu Ressourcen, die notwendig sind für die entsprechende Funktion. Es handelt sich stets um ein Array, das mehrere Typen als Einträge haben kann:
 
-* `id` wird benutzt, um die Ressource zu finden. Bedeutung siehe `mode`.
-* `mode` kann folgende Werte annehmen:
-  - `WEB_SERVICE`: Online-Dienst. Die `id` ist eine Url.
-  - `FILE`: Datei, die ohne weitere Bearbeitung über GET bereitgestellt wird. Die `id` ist ein Dateiname.
-  - `FILE_UNPACK`: Zip-Archiv, das für die Bereitstellung zunächst ausgepackt wird. Es werden danach die einzelnen darin enthaltenen Dateien angefordert, ggf. mit dem Pfad, den die Datei im Zip-Archiv hat. Die `id` ist ein Dateiname.
-  - `FILE_STREAM`: Mediendatei, deren Bereitstellung auf den Abruf durch Streaming optimiert wird. Die `id` ist ein Dateiname.
-  - `WIDGET`: Frontend-Modul nach [Verona-Standard](https://verona-interfaces.github.io/widget-docs/). Die `id` ist ein Key entsprechend der Widget-Spezifikation (z. B. `CALC` oder `MOLECULE_EDITOR`).
+* **Datei**: Folgende Eigenschaften spezifizieren diese Datei:
+  - `fileName`: Name der Datei relativ zur Index-Datei (erforderlich)
+  - `unpackBeforeProviding`: Der Zugriff (Request) erfolgt nicht auf die Datei selbst, sondern es handelt sich um ein Datei-Archiv mit mehreren Dateien. Dieses Archiv (z. B. ZIP) muss erst ausgepackt werden, und der Zugriff erfolgt dann auf eine dieser Dateien. Der Typ des Archives ist standardmäßig zip (Steuerung ggf. über Dateiendung).
+  - `httpResponseMode`: Bei der Auslieferung können Sets von Parametern die Performance verbessern. Beim Modus `STREAM` sollte beispielsweise eine variable Bitrate bei der multipart-Auslieferung eingestellt werden. `STANDARD` wäre ein normales GET.
+* **Widget**: Es wird nur ein String übergeben, der den Typ des [Verona-Widgets](https://verona-interfaces.github.io/widget-docs/) angibt. Es wird bei Widgets kein spezifisches Modul angegeben, sondern es muss irgendein Modul dieser Art verfügbar sein.
 
 ## UI-Definition `userInterface`
 
