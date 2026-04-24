@@ -22,21 +22,27 @@ jobs:
         with:
          node-version: 20
       - name: Prepare repo
+        if: github.event_name != 'pull_request'
         run: |
           git fetch origin
           git config --global user.email "mechtel@iqb.hu-berlin.de"
           git config --global user.name "Martin Mechtel"
           git checkout gh-pages
-          git reset --hard main
+          git reset --hard origin/main
       - name: Run html generation
         run: |
           npm ci
           npm run generate_docs
           mv public docs
       - name: Push changes
+        if: github.event_name != 'pull_request'
         run: |
           git add docs
+          if git diff --cached --quiet; then
+            echo "No documentation changes to publish."
+            exit 0
+          fi
           git commit -m "update gh-pages"
-          git push -f
+          git push -f origin gh-pages
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
