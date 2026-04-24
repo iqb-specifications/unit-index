@@ -51,7 +51,7 @@ In diesem Dokument werden an mehreren Stellen Abhängigkeiten definiert. Das sin
 
 * **Datei**: Folgende Eigenschaften spezifizieren diese Datei:
   - `fileName`: Name der Datei relativ zur Index-Datei (erforderlich)
-  - `unpackBeforeProviding`: Der Zugriff (Request) erfolgt nicht auf die Datei selbst, sondern es handelt sich um ein Datei-Archiv mit mehreren Dateien. Dieses Archiv (z. B. ZIP) muss erst ausgepackt werden, und der Zugriff erfolgt dann auf eine dieser Dateien. Der Typ des Archives ist standardmäßig zip (Steuerung ggf. über Dateiendung).
+  - `unpackBeforeProviding`: Wenn `true`, dann erfolgt der Zugriff (Request) nicht auf die Datei selbst, sondern es handelt sich um ein Datei-Archiv mit mehreren Dateien. Dieses Archiv (z. B. ZIP) muss erst ausgepackt werden, und der Zugriff erfolgt dann auf eine dieser Dateien. Der Typ des Archives ist standardmäßig zip (Steuerung ggf. über Dateiendung).
   - `httpResponseMode`: Bei der Auslieferung können Sets von Parametern die Performance verbessern. Beim Modus `STREAM` sollte beispielsweise eine variable Bitrate bei der multipart-Auslieferung eingestellt werden. `STANDARD` wäre ein normales GET.
 * **Widget**: Es wird nur ein String übergeben, der den Typ des [Verona-Widgets](https://verona-interfaces.github.io/widget-docs/) angibt. Es wird bei Widgets kein spezifisches Modul angegeben, sondern es muss irgendein Modul dieser Art verfügbar sein.
 
