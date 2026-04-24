@@ -40,7 +40,7 @@ Das obige Beispiel zeigt eine Minimalvariante einer Unit-Definition: Es gibt nur
 ## Allgemeine Daten
 
 * `id`: Id der Unit - wird durch den User vergeben
-* `uuid`: Universelle Id der Unit - wird automatisch vergeben. Die gesicherte Einmaligkeit hilft beim Wiederfinden von Varianten/Versionen einer Unit
+* `uuid`: Optionale universelle Id der Unit. Sie wird für neu erzeugte Units typischerweise automatisch vergeben. Die gesicherte Einmaligkeit hilft beim Wiederfinden von Varianten/Versionen einer Unit
 * `modifiedAt`: Markiert den Zeitpunkt der letzten Änderung der Index-Daten. Sollte sich ein externer Datenblock ändern, wird dessen `modifiedAt`-Wert neu gesetzt, aber der `modifiedAt`-Wert für den Index ändert sich nicht.
 * Die optionalen Werte für `label` und `description` können Texte enthalten, die bei der Anzeige und der Verarbeitung der Unit genutzt werden.
 * Hinweis: Über den externen Datenblock `metadata` können weitere Unit-Metadaten übergeben werden (s. u.).
@@ -110,4 +110,4 @@ Da mit der Änderung des Formates erhebliche Umstellungsarbeiten in den Programm
 * Speicherung von Kommentaren, die z. B. in der Entwicklungsumgebung IQB-Studio vergeben wurden
 * Speicherung von formatierten Texten (rich notes), mit denen Transripte und didaktische Kommentierungen implementiert werden können (Text, Bilder, Links)
 * die Daten eines Items enthalten jetzt die Möglichkeit, neben der Quellvariable eine weitere Variable zu nennen, die für die Anzeige des Items genutzt werden kann (visualAnchorVariable)
-* die Unit erhält eine `uuid`
+* neue Units erhalten typischerweise eine `uuid`

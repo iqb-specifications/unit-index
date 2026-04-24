@@ -15,7 +15,7 @@
     },
     "uuid": {
       "type": "string",
-      "description": "Universal id to identify versions and variants in many different assessments.",
+      "description": "Optional universal id to identify versions and variants in many different assessments.",
       "examples": [
         "d19188fc-02e3-439e-9ff9-4f8280f9f01c",
         "https://w3id.org/iqb/unit/e4r5t6z7"
@@ -58,10 +58,10 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "#/$defs/externalDependencyWidget"
+                "$ref": "#/definitions/externalDependencyWidget"
               },
               {
-                "$ref": "#/$defs/externalDependencyFile"
+                "$ref": "#/definitions/externalDependencyFile"
               }
             ]
           }
@@ -78,10 +78,10 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "#/$defs/externalDependencyWidget"
+                "$ref": "#/definitions/externalDependencyWidget"
               },
               {
-                "$ref": "#/$defs/externalDependencyFile"
+                "$ref": "#/definitions/externalDependencyFile"
               }
             ]
           }
@@ -121,29 +121,29 @@
       "additionalProperties": false
     },
     "codingScheme": {
-      "$ref": "#/$defs/externalDataBlock"
+      "$ref": "#/definitions/externalDataBlock"
     },
     "comments": {
-      "$ref": "#/$defs/externalDataBlock"
+      "$ref": "#/definitions/externalDataBlock"
     },
     "richNotes": {
-      "$ref": "#/$defs/externalDataBlock"
+      "$ref": "#/definitions/externalDataBlock"
     },
     "metadata": {
-      "$ref": "#/$defs/externalDataBlock"
+      "$ref": "#/definitions/externalDataBlock"
     },
     "items": {
-      "$ref": "#/$defs/externalDataBlock"
+      "$ref": "#/definitions/externalDataBlock"
     },
     "variables": {
-      "$ref": "#/$defs/externalDataBlock"
+      "$ref": "#/definitions/externalDataBlock"
     }
   },
   "required": [
     "id", "userInterface"
   ],
   "additionalProperties": false,
-  "$defs": {
+  "definitions": {
     "externalDataBlock": {
       "type": "object",
       "description": "External file as part of the unit data.",
@@ -175,10 +175,10 @@
           "items": {
             "oneOf": [
               {
-                "$ref": "#/$defs/externalDependencyWidget"
+                "$ref": "#/definitions/externalDependencyWidget"
               },
               {
-                "$ref": "#/$defs/externalDependencyFile"
+                "$ref": "#/definitions/externalDependencyFile"
               }
             ]
           }
