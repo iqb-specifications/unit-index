@@ -85,7 +85,7 @@ Folgende Datenblöcke werden auf diese Art referenziert:
 | `richNotes` | **Formatierte Texte/ Begleitmaterial**: Formatierte Texte (Html ggf. mit eingebetteten Bildern) mit unterschiedlichen Verwendungszwecken (z. B. didaktische Kommentare, Transcript) und Links.  | [iqb-unit-rich-notes](https://iqb-specifications.github.io/unit-rich-notes/) |  *.vorn.json |
 | `metadata` | **Metadaten der Unit**: In einem standardisierten JSON-Format werden Verweise auf Vokabulare und Metadatenprofile gespeichert.  | [metadata-values](https://iqb-specifications.github.io/metadata-values/) | *.vomd.json |
 | `items`     | **Items**: Liste von Items mit Metadaten und Zuordnung von Variablen  | [iqb-unit-items](https://iqb-specifications.github.io/unit-items/)  | *.voit.json |
-| `variables` | **Variablen**: Es werden alle möglichen Variablen aufgeführt, die die Antwortwerte enthalten. Die JSON-Datei enthält zwei Einträge `baseVariables` und `derivedVariables`, jeweils ein Array der folgenden Verona-Datenstruktur | [variable-info](https://verona-interfaces.github.io/variable-info/)    | *.vova.json |
+| `variables` | **Variablen**: Es werden alle möglichen Variablen aufgeführt, die die Antwortwerte enthalten. Die JSON-Datei enthält zwei Einträge `baseVariables` und `derivedVariables`. | [unit-variables](https://iqb-specifications.github.io/unit-variables/)    | *.vova.json |
 
 
 # Änderungen gegenüber der XML-Version
