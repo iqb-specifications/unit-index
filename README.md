@@ -11,9 +11,8 @@ Read more:
 Change log see releases.
 
 <hr/>
-Achtung: Spezifikation und Dokumentation befinden sich derzeit in Überarbeitung. Für die wichtigsten Änderungen beim Wechsel vom XML- zum JSON-Format siehe [unten](https://github.com/iqb-specifications/unit-index?tab=readme-ov-file#Vergleich-zur-XML-Version)!
 
-# Kurzdokumentation {#io}
+# Überblick
 
 Leistungstests und Befragungen sind im Kontext von [TBA](https://iqb-berlin.github.io/tba-info/) Folgen von Units. Eine Unit soll mit ihren Daten zunächst unabhängig von einer Testdurchführung entwickelt werden. Die Platzierung in Tests erfolgt zu einem späteren Zeitpunkt. Es soll dann sehr einfach sein, eine Unit in einem anderen Test einzusetzen.
 
@@ -36,6 +35,8 @@ Um eine hohe Flexibilität zu ermöglichen, ist hier nur der Index spezifiziert.
 ```
 
 Das obige Beispiel zeigt eine Minimalvariante einer Unit-Definition: Es gibt nur die Index-Datei, und die Definition des User Interfaces ist nicht extern geführt, sondern wird inline übergeben.
+
+# Spezifikation
 
 ## Allgemeine Daten
 
@@ -62,7 +63,7 @@ Eine Unit benötigt eine Definition für die Darstellung und ggf. Interaktion du
 * `player`: Zur Anzeige in einem Verona-System muss ein zu der UI-Definition passender Player zur Verfügung stehen. Mit diesem Attribut wird die Id und ggf. die Version des Players angegeben.
 * `editor`: Zum Editieren in einem Verona-System kann ein zu der UI-Definition passender Editor genutzt werden. Mit diesem Attribut wird die Id und ggf. die Version des Editors angegeben.
 * `type`: Wenn die UI-Definition einer Spezifikation folgt, kann die Id und die Version dieser Spezifikation angegeben werden. Dadurch kann ein alternativer Player oder Editor zugewiesen werden, falls der oben Genannte nicht gefunden wird. Außerdem kann diese Angabe helfen, Kompatibilitätsprobleme zu finden und zu beheben.
-* `definition`: Hier ist die eigentliche UI-Definition zu finden, die der Player für die Präsentation und ggf. Interaktion bekommen soll. Es kann sich hier um einen Dateinamen handeln mit diesem Inhalt oder um die (maskierte/stringified) Definition selbst. Die Unterscheidung wird über den Schalter `isDefinitionInline` getroffen.
+* `definition`: Hier ist die eigentliche UI-Definition zu finden, die der Player für die Präsentation und ggf. Interaktion bekommen soll. Es kann sich hier um einen Dateinamen handeln mit diesem Inhalt (Standardname `*.ui.json`) oder um die (maskierte/stringified) Definition selbst. Die Unterscheidung wird über den Schalter `isDefinitionInline` getroffen.
 * `isDefinitionInline`: Legt fest, wie die Eigenschaft `definition` zu interpretieren ist. Wenn false (Default-Wert), dann ist dort ein Key als externer Datenblock gespeichert. Wenn true, dann ist der Inhalt von `definition` direkt die UI-Definition. Hinweis: Es kann auch Player geben, die keine UI-Definition benötigen, wie z. B. kleine Spiele, die in den Testverlauf eingestreut werden. Dann fehlt `definition` oder ist leer.
 * `modifiedAt`: Zeitpunkt der letzten Änderung
 * `playerDependencies`, `editorDependencies`: Abhängigkeiten, die für die Funktionalität des Players bzw. Editors bereitgestellt werden müssen.
@@ -78,14 +79,14 @@ Die folgende Tabelle listet alle möglichen externen Datenblöcke. Es handelt si
 
 Folgende Datenblöcke werden auf diese Art referenziert:
 
-| Tag           | Erläuterung                                                                                                                                                                                                              | Default                                       | Konvention Dateiname                  |
+| Tag           | Erläuterung                                                                                                                                                                                                              | Relevante Spec                                      | Konvention Dateiname                  |
 |---------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------|------------|
-| `codingScheme`         | **Kodieranweisungen/Kodierschema**: Vorschriften, wie die Antworten der Unit zu kodieren sind. | [iqb-coding-scheme](https://iqb-specifications.github.io/coding-scheme/)   | *.vocs.json |
-| `comments` | **Kommentare**: Formatierte hierarchische Texte (Html ggf. mit eingebetteten Bildern) zur Diskussion während der Entwicklungszeit  | [iqb-unit-comments](https://iqb-specifications.github.io/unit-comments/)   | *.voco.json |
-| `richNotes` | **Formatierte Texte/ Begleitmaterial**: Formatierte Texte (Html ggf. mit eingebetteten Bildern) mit unterschiedlichen Verwendungszwecken (z. B. didaktische Kommentare, Transcript) und Links.  | [iqb-unit-rich-notes](https://iqb-specifications.github.io/unit-rich-notes/) |  *.vorn.json |
-| `metadata` | **Metadaten der Unit**: In einem standardisierten JSON-Format werden Verweise auf Vokabulare und Metadatenprofile gespeichert.  | [metadata-values](https://iqb-specifications.github.io/metadata-values/) | *.vomd.json |
-| `items`     | **Items**: Liste von Items mit Metadaten und Zuordnung von Variablen  | [iqb-unit-items](https://iqb-specifications.github.io/unit-items/)  | *.voit.json |
-| `variables` | **Variablen**: Es werden alle möglichen Variablen aufgeführt, die die Antwortwerte enthalten. Die JSON-Datei enthält zwei Einträge `baseVariables` und `derivedVariables`. | [unit-variables](https://iqb-specifications.github.io/unit-variables/)    | *.vova.json |
+| `codingScheme`         | **Kodieranweisungen/Kodierschema**: Vorschriften, wie die Antworten der Unit zu kodieren sind. | [iqb-coding-scheme](https://iqb-specifications.github.io/coding-scheme/)   | *.cs.json |
+| `comments` | **Kommentare**: Formatierte hierarchische Texte (Html ggf. mit eingebetteten Bildern) zur Diskussion während der Entwicklungszeit  | [iqb-unit-comments](https://iqb-specifications.github.io/unit-comments/)   | *.co.json |
+| `richNotes` | **Formatierte Texte/ Begleitmaterial**: Formatierte Texte (Html ggf. mit eingebetteten Bildern) mit unterschiedlichen Verwendungszwecken (z. B. didaktische Kommentare, Transcript) und Links.  | [iqb-unit-rich-notes](https://iqb-specifications.github.io/unit-rich-notes/) |  *.rn.json |
+| `metadata` | **Metadaten der Unit**: In einem standardisierten JSON-Format werden Verweise auf Vokabulare und Metadatenprofile gespeichert.  | [metadata-values](https://iqb-specifications.github.io/metadata-values/) | *.md.json |
+| `items`     | **Items**: Liste von Items mit Metadaten und Zuordnung von Variablen  | [iqb-unit-items](https://iqb-specifications.github.io/unit-items/)  | *.it.json |
+| `variables` | **Variablen**: Es werden alle möglichen Variablen aufgeführt, die die Antwortwerte enthalten. Die JSON-Datei enthält zwei Einträge `baseVariables` und `derivedVariables`. | [unit-variables](https://iqb-specifications.github.io/unit-variables/)    | *.va.json |
 
 
 # Änderungen gegenüber der XML-Version
@@ -111,3 +112,7 @@ Da mit der Änderung des Formates erhebliche Umstellungsarbeiten in den Programm
 * Speicherung von formatierten Texten (rich notes), mit denen Transripte und didaktische Kommentierungen implementiert werden können (Text, Bilder, Links)
 * die Daten eines Items enthalten jetzt die Möglichkeit, neben der Quellvariable eine weitere Variable zu nennen, die für die Anzeige des Items genutzt werden kann (visualAnchorVariable)
 * neue Units erhalten typischerweise eine `uuid`
+
+## Zeitplan
+
+Da eine große Anzahl von Units im XML-Format existiert, erfolgt die Umstellung schrittweise. Die parallele Unterstützung des XML-Formates durch den IQB-Stack wird voraussichtlich bis Ende 2027 fortgeführt.
