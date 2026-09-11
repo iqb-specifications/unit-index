@@ -13,7 +13,7 @@ Change log see releases.
 <hr/>
 Achtung: Spezifikation und Dokumentation befinden sich derzeit in Überarbeitung. Für die wichtigsten Änderungen beim Wechsel vom XML- zum JSON-Format siehe [unten](https://github.com/iqb-specifications/unit-index?tab=readme-ov-file#Vergleich-zur-XML-Version)!
 
-# Kurzdokumentation{#io}
+# Kurzdokumentation {#io}
 
 Leistungstests und Befragungen sind im Kontext von [TBA](https://iqb-berlin.github.io/tba-info/) Folgen von Units. Eine Unit soll mit ihren Daten zunächst unabhängig von einer Testdurchführung entwickelt werden. Die Platzierung in Tests erfolgt zu einem späteren Zeitpunkt. Es soll dann sehr einfach sein, eine Unit in einem anderen Test einzusetzen.
 
